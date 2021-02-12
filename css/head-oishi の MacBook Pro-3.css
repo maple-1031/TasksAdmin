@@ -1,0 +1,134 @@
+@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Lato:100,400);
+@keyframes load{0%{stroke-dashoffset:0}}
+
+.logo {
+  width: 160px;
+}
+
+.navi {
+  list-style-type: none;
+  display: flex;
+  font-size: 11px;
+  text-transform: uppercase;
+  padding-bottom: none;
+  margin-right: 30px
+}
+
+.head-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 0px;
+  border-bottom: 2px solid #d9d9d9;
+}
+
+.body-main {
+  margin: 0px;
+  background-color: #f2f2f2;
+}
+
+.icon {
+  width: 30px;
+  margin: 8px;
+}
+
+article {
+  width: 68%;
+}
+
+aside {
+  width: 28%
+}
+
+.two-columns {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  height: 85vh;
+}
+
+.submit {
+  height: 50%;
+  border-bottom: 2px solid #d9d9d9;
+}
+
+.achive {
+  height: 50%;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-left: 2px dashed #d9d9d9;
+}
+
+.tasks {
+  background-color: #CCF;
+  float: left;
+  min-height: 55px;
+  max-height: 80vh;
+  padding: 10px;
+}
+
+#left_tasks {
+  width: 62vw;
+  margin-left: 3vw;
+
+}
+
+#right_tasks {
+  margin-left: 1vw;
+  width: 24vw;
+}
+
+.elem {
+  background-color: #FFF;
+  border: 1px solid #99C;
+  font-size: 20px;
+  line-height: 48px;
+  list-style-type: none;
+  margin-bottom: 5px;
+  padding: 0px 10px 0px;
+  min-width: 500px;
+  width: 70vw;
+  max-width: 70vw;
+  display: table;
+  justify-content: space-around;
+  vertical-align: middle;
+}
+
+.on_tasks {
+  background-color: #EEF;
+  height: 50px;
+  list-style-type: none;
+  margin-bottom: 5px;
+  width: 170px;
+}
+
+.deadline {
+  margin: 0 15px;
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.subject {
+  margin: 0 15px;
+  letter-spacing: 8px;
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.open {
+  display: table-cell;
+  padding: 0px 1em;
+  margin: 2px;
+  text-decoration: none;
+  text-align: center;
+  vertical-align: middle;
+  color: #67c5ff;
+  border: solid 2px #67c5ff;
+  border-radius: 3px;
+  transition: .4s;
+}

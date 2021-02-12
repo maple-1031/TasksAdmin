@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="{{url_for('static', filename = 'head.css')}}">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="{{url_for('static', filename = 'sort.js')}}"></script>
+    <script src="{{url_for('static', filename = 'appendlist.js')}}"></script>
+    <script type="text/javascript" language="JavaScript">
+      function cons() {
+        for (var i = 0; i < {{rep_num.list}}; i++) {
+          var newDeadline = document.createElement("div");
+          newDeadline.className = "deadline";
+          newDeadline.innerHTML = "okokok"
+          var newSubject = document.createElement("div");
+          newSubject.className = "subject";
+          newSubject.innerHTML = "example";
+          var newOpen = document.createElement("a");
+          newOpen.className = "open";
+          newOpen.innerHTML = "OPEN";
+          newOpen.href = "#";
+
+          var newlist = document.createElement("li");
+          newlist.className = "elem";
+          newlist.appendChild(newDeadline);
+          newlist.appendChild(newSubject);
+          newlist.appendChild(newOpen);
+
+          var board = document.getElementById("left_tasks");
+          board.appendChild(newlist)
+        }
+      }
+    </script>
+  </head>
+  <script Language="JavaScript">
+    function tDate()
+    {
+      const month_english_list = ['Jan.','Feb.','Mar.','Apr.','May','June','July','Aug.','Sept.','Oct.','Nov.','Dec.']
+      dt = new Date();
+      m = dt.getMonth();
+      m_en = month_english_list[m];
+      d = dt.getDate();
+      document.title = m_en + " " + d + " | What's new";
+    }</script>
+
+  <body class="body-main" onload="tDate();cons()">
+    <header class="head-main">
+      <h1><a href="#"><img class="logo" src="{{url_for('static', filename = 'logo.svg')}}" alt="kaede"></a></h1>
+      <nav>
+        <ol class="navi">
+          <li><a href="#"><img class="icon" src="{{url_for('static', filename = 'home.svg')}}" alt="home"></a></li>
+          <li><a href="#"><img class="icon" src="{{url_for('static', filename = 'regist.svg')}}" alt="regist"></a></li>
+          <li><a href="#"><img class="icon" src="{{url_for('static', filename = 'keio.svg')}}" alt="keio"></a></li>
+        </ol>
+      </nav>
+    </header>
+    <div class="two-columns">
+      <article class="article">
+        <ul class="tasks" id="left_tasks">
+          <li class="elem">
+            <div class="deadline">
+              {{deadline.1}}
+            </div>
+            <div class="subject">
+              {{subject.val1}}
+            </div>
+            <a href="#" class="open">OPEN</a>
+          </li>
+        </ul>
+      </article>
+      <aside class="right">
+        <div class="submit">
+          <ul class="tasks" id="right_tasks">
+          </ul>
+        </div>
+        <div class="achive">
+        </div>
+      </aside>
+    </div>
+  </body>
+</html>
