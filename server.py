@@ -61,6 +61,12 @@ time.sleep(0.5)
 report_button = driver.find_elements_by_xpath("//form[@action=\"/ess2/reportAction\"]/button")
 report_subid = driver.find_elements_by_xpath("//form[@action=\"/ess2/reportAction\"]/input[@name=\"SELECT_ENTNO\"]")
 
+for (element, id_element) in zip(report_button, report_subid):
+    report = Report()
+    argid = int(id_element.get_attribute("value"))
+    print(argid)
+    report.name = report.subid2name(argid)
+
 nc = Flask(__name__)
 
 @nc.route("/")
