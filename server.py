@@ -16,6 +16,8 @@ import time
 from selenium import webdriver
 import sqlite3
 
+import settings
+
 conn = sqlite3.connect('subs_2020.db')
 c = conn.cursor()
 
@@ -30,8 +32,8 @@ class Report():
         i = tuple(c.execute(comm))
         return i[0][1]
 
-mail = "maple_1031@keio.jp"
-password = "keio1031"
+mail = settings.user
+password = settings.password
 
 driver = webdriver.Chrome("D:\\Users\\maple\\Python\\chromedriver_win32\\chromedriver.exe")
 driver.get('https://portal.keio.jp/koid/')
