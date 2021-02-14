@@ -72,16 +72,19 @@ for i in range(len(report_button)):
     report.deadline = driver.find_element_by_xpath('//*[@id="student"]/div[2]/div[1]/form/div[1]/div/div/div/div[2]/div[5]/div/p').text
     print(report.deadline)
     driver.find_element_by_xpath('//button[@name="BTN_JIKANWARI"]').click()
+    
+conn.close()
+driver.quit()
 
 nc = Flask(__name__)
 
 @nc.route("/")
 def check():
-      rep_num = {"list": 6}
-      deadline = {0: 10, 1 :200}
+      rep_num = {"list": 3}
+      deadline = {0: 10, 1 :300}
       subject = {"val1": 5, "val2": 400}
       return render_template('index.html', deadline = deadline, subject = subject, rep_num = rep_num)
 
 if __name__ == '__main__':
-    nc.run(host="127.0.0.1", port=8080)
+    nc.run(host="127.0.0.1", port=8080, debug=False)
 
