@@ -61,11 +61,17 @@ time.sleep(0.5)
 report_button = driver.find_elements_by_xpath("//form[@action=\"/ess2/reportAction\"]/button")
 report_subid = driver.find_elements_by_xpath("//form[@action=\"/ess2/reportAction\"]/input[@name=\"SELECT_ENTNO\"]")
 
-for (element, id_element) in zip(report_button, report_subid):
+for i in range(len(report_button)):
+    report_button = driver.find_elements_by_xpath("//form[@action=\"/ess2/reportAction\"]/button")
+    report_subid = driver.find_elements_by_xpath("//form[@action=\"/ess2/reportAction\"]/input[@name=\"SELECT_ENTNO\"]")
     report = Report()
-    argid = int(id_element.get_attribute("value"))
-    print(argid)
+    argid = int(report_subid[i].get_attribute("value"))
     report.name = report.subid2name(argid)
+    print(report.name)
+    report_button[i].click()
+    report.deadline = driver.find_element_by_xpath('//*[@id="student"]/div[2]/div[1]/form/div[1]/div/div/div/div[2]/div[5]/div/p').text
+    print(report.deadline)
+    driver.find_element_by_xpath('//button[@name="BTN_JIKANWARI"]').click()
 
 nc = Flask(__name__)
 
