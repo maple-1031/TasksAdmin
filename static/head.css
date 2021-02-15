@@ -2,6 +2,13 @@
 @import url(https://fonts.googleapis.com/css?family=Lato:100,400);
 @keyframes load{0%{stroke-dashoffset:0}}
 
+* { 
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -o-box-sizing:border-box;
+  box-sizing:border-box;
+}
+
 .logo {
   width: 160px;
 }
@@ -138,4 +145,30 @@ aside {
   border: solid 2px #67c5ff;
   border-radius: 3px;
   transition: .4s;
+}
+
+.acc-container {
+  margin:30px auto 0 auto;
+  -webkit-border-radius:8px;
+  -moz-border-radius:8px;
+  -o-border-radius:8px;
+  border-radius:8px;
+  overflow: hidden;
+}
+
+.acc-btn { 
+  margin:0 auto;
+  padding:20px 25px;
+  cursor:pointer;
+  background:#34495E;
+  border-bottom:1px solid #2C3E50;
+}
+
+.acc-content {
+  width:100%;
+  margin:0 auto;
+  display: none;
+  background:#2C3E50;
+  padding:30px;
+  height: auto;
 }

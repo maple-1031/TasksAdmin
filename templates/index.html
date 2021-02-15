@@ -4,6 +4,9 @@
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" href="{{url_for('static', filename = 'head.css')}}">
+    <link href="../static/head.css" rel="stylesheet" type="text/css" media="screen">
+
+	
     <!--
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
@@ -35,7 +38,11 @@
         }
       }
     </script>
+	  
   </head>
+	
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script type="text/javascript" language="javascript" src="../static/acc.js" ></script>
   <script Language="JavaScript">
     function tDate()
     {
@@ -60,22 +67,44 @@
     </header>
     <div class="two-columns">
       <article class="article">
-        <ul class="tasks" id="left_tasks">
-          <li class="elem">
-            <div class="deadline">
-              {{deadline.1}}
+        <div class="tasks acc-container" id="left_tasks">
+            <div class="acc-btn">
+				aiueo
+				<!--
+              <div class="deadline">
+                {{deadline.1}}
+              </div>
+              <div class="subject">
+                {{subject.val1}}
+              </div>
+-->
             </div>
-            <div class="subject">
-              {{subject.val1}}
+			<div class="acc-content">
+				<div class="task-func">
+					123456
+				</div>
+			</div>
+			<div class="acc-btn">
+				aiueo
+				<!--
+              <div class="deadline">
+                {{deadline.1}}
+              </div>
+              <div class="subject">
+                {{subject.val1}}
+              </div>
+-->
             </div>
-            <a href="#" class="open">OPEN</a>
-          </li>
-        </ul>
+			<div class="acc-content">
+				<div class="task-func">
+					123456
+				</div>
+			</div>
+        </div>
       </article>
       <aside class="right">
         <div class="submit">
-          <ul class="tasks" id="right_tasks">
-          </ul>
+          &nbsp;
         </div>
         <div class="achive">
         </div>
