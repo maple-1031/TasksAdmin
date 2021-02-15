@@ -151,26 +151,22 @@ print(report_list)
 conn.close()
 driver.quit()
 
-conn = sqlite3.connect('current_tasks.db')
-c = conn.cursor()
-
 for i in report_list:
     task = Task()
-    id_source = open('int.txt', 'r', encoding='UTF-8')
-    id_data = id_source.read()
-    id_source.close()
-    task.id = task.id_gen(id_data)
-    id_write = open("int.txt", "w")
-    id_write.write(str(task.id))
-    id_write.close()
-    
-    task.path = i[2]
+    with open("current_tasks.json") as f:
+        df = json.load(f)
+
+    task.path = i[3]
+    task.subject = i[0]
     task.deadline = int(task.deadline_gen(i[1]))
-    comm = f"insert into tasks values({task.id}, '{task.path}', '{i[0]}', {task.deadline}, '{i[1]}')"
+    task.deadline_str = i[1]
+    task.task_hash = hash("".join(i[:3]))
+    temp_dict = {"path":task.path, "subject":task.subject, "deadline_unix":task.deadline, "deadline_str":task.deadline_str, "task_hash":task.task_hash}
+    if temp_dict not in list(df.values())[0]:
+        df["current_tasks"].append(temp_dict)
 
-    c.execute(comm)
-
-conn.close()
+    with open("current_tasks.json", "w") as f:
+        json.dump(df, f, indent=4)
 
 nc = Flask(__name__)
 
