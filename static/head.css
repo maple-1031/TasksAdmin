@@ -32,7 +32,7 @@
 
 .body-main {
   margin: 0px;
-  background-color: #f2f2f2;
+  background-color: #f8f8f8;
 }
 
 .icon {
@@ -72,11 +72,12 @@ aside {
 }
 
 .tasks {
-  background-color: #CCF;
-  float: left;
-  min-height: 55px;
-  max-height: 80vh;
-  padding: 10px;
+	background-color: #f8f8f8;
+	/*border: solid 0.5px #00005d;*/
+	float: left;
+	min-height: 55px;
+	max-height: 80vh;
+	padding: 10px;
 }
 
 #left_tasks {
@@ -120,12 +121,6 @@ aside {
   height: 100px;
 }
 
-.deadline {
-  margin: 0 15px;
-  vertical-align: middle;
-  display: table-cell;
-}
-
 .subject {
   margin: 0 15px;
   letter-spacing: 8px;
@@ -157,18 +152,72 @@ aside {
 }
 
 .acc-btn { 
-  margin:0 auto;
-  padding:20px 25px;
-  cursor:pointer;
-  background:#34495E;
-  border-bottom:1px solid #2C3E50;
+	background-color: #ffffff;
+	margin:0 auto;
+	padding:5px 10px;
+	cursor:pointer;
+	border:2px solid #7acbe1;
+	border-radius:8px;
+}
+
+.active {
+	margin:0 auto;
+	padding:5px 10px;
+	cursor:pointer;
+	background:#ffffff;
+	border:solid #7acbe1;
+	border-width: 2px 2px 1px;
+	border-radius: 8px 8px 0px 0px;
 }
 
 .acc-content {
-  width:100%;
-  margin:0 auto;
-  display: none;
-  background:#2C3E50;
-  padding:30px;
-  height: auto;
+	width:100%;
+	margin:0 auto;
+	display: none;
+	background:#ffffff;
+	padding:30px;
+	height: auto;
+	border: solid #7abce1;
+	border-width: 0px 2px 2px;
+	border-radius: 0px 0px 8px 8px;
+}
+.sub-name {
+	color: #34495E;
+	font-size: 20px;
+	font-weight: 550;
+	letter-spacing: 5px;
+	margin-left: 15px;
+}
+
+
+.acc-group {
+	padding-bottom: 5px;
+}
+
+.file-path {
+	font-size: 12px;
+	color: #b4c1d1;
+	margin-left: 15px;
+}
+
+.deadline {
+	font-size: 16px;
+	color: #b4c1d1;
+	margin-left: 5px;
+}
+
+.func {
+	width: 80px;
+	margin: 8px 20px;
+}
+
+.task-func {
+	display: flex;
+	justify-content: space-around;
+	height: 100px;
+}
+
+.func-around {
+	border: solid #74EDBE 1px;
+	border-radius: 8px;
 }

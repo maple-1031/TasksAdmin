@@ -72,6 +72,7 @@ def dup_check(filename):
     else:
         return True
 
+ 
 
 nc = Flask(__name__)
 
@@ -176,7 +177,7 @@ def check():
     
     for i in report_list:
         task = Task()
-        with open("current_tasks.json") as f:
+        with open("current_tasks.json", mode="rt", encoding="utf-8") as f:
             df = json.load(f)
     
         task.path = i[3]
@@ -184,12 +185,18 @@ def check():
         task.deadline = int(task.deadline_gen(i[1]))
         task.deadline_str = i[1]
         task.task_hash = hash("".join(i[:3]))
-        temp_dict = {"path":task.path, "subject":task.subject, "deadline_unix":task.deadline, "deadline_str":task.deadline_str, "task_hash":task.task_hash}
+        temp_dict = {"path":task.path,
+                     "subject":task.subject,
+                     "deadline_unix":task.deadline,
+                     "deadline_str":task.deadline_str,
+                     "deadline_day_str":task.deadline_str.split(" ")[0],
+                     "task_hash":task.task_hash
+                     }
         if temp_dict not in list(df.values())[0]:
             df["current_tasks"].append(temp_dict)
     
-        with open("current_tasks.json", "w") as f:
-            json.dump(df, f, indent=4)
+        with open("current_tasks.json", mode="wt", encoding="utf-8") as f:
+            json.dump(df, f, indent=4, ensure_ascii=False)
     
 
     rep_num = {"list": 2}
