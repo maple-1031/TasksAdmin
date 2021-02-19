@@ -1,0 +1,32 @@
+@charset "utf-8";
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400|Raleway:300);
+/* CSS Document */
+
+.add-task-btn {
+	position: relative;
+	display: block;
+	overflow: hidden;
+	text-transform: uppercase;
+}
+.add-task-btn span {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: #7ACBE1;
+  transition: width 0.4s ease-in-out, height 0.4s ease-in-out;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+.add-task-btn:hover {
+  color: #f2f2f2;
+}
+.add-task-btn:hover span {
+  width: 300%;
+  height: 400%;
+}
+.add-task-btn:active {
+  background-color: #7ACBE1;
+}
