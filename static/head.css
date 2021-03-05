@@ -2,6 +2,13 @@
 @import url(https://fonts.googleapis.com/css?family=Lato:100,400);
 @keyframes load{0%{stroke-dashoffset:0}}
 
+* { 
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -o-box-sizing:border-box;
+  box-sizing:border-box;
+}
+
 .logo {
   width: 160px;
 }
@@ -25,7 +32,7 @@
 
 .body-main {
   margin: 0px;
-  background-color: #f2f2f2;
+  background-color: #f8f8f8;
 }
 
 .icon {
@@ -65,11 +72,12 @@ aside {
 }
 
 .tasks {
-  background-color: #CCF;
-  float: left;
-  min-height: 55px;
-  max-height: 80vh;
-  padding: 10px;
+	background-color: #f8f8f8;
+	/*border: solid 0.5px #00005d;*/
+	float: left;
+	min-height: 55px;
+	max-height: 80vh;
+	padding: 0px 10px;
 }
 
 #left_tasks {
@@ -113,12 +121,6 @@ aside {
   height: 100px;
 }
 
-.deadline {
-  margin: 0 15px;
-  vertical-align: middle;
-  display: table-cell;
-}
-
 .subject {
   margin: 0 15px;
   letter-spacing: 8px;
@@ -138,4 +140,302 @@ aside {
   border: solid 2px #67c5ff;
   border-radius: 3px;
   transition: .4s;
+}
+
+.acc-container {
+  margin:30px auto 0 auto;
+  -webkit-border-radius:8px;
+  -moz-border-radius:8px;
+  -o-border-radius:8px;
+  border-radius:8px;
+  overflow: hidden;
+}
+
+.acc-btn { 
+	background-color: #ffffff;
+	margin:0 auto;
+	padding:5px 10px;
+	cursor:pointer;
+	border:2px solid #7acbe1;
+	border-radius:8px;
+	transition: all 400ms 0s ease;
+}
+
+.active {
+	margin:0 auto;
+	padding:5px 10px;
+	cursor:pointer;
+	background:#ffffff;
+	border:solid #7acbe1;
+	border-width: 2px 2px 1px;
+	border-radius: 8px 8px 0px 0px;
+}
+
+.acc-content {
+	width:100%;
+	margin:0 auto;
+	display: none;
+	background:#ffffff;
+	padding:30px;
+	height: auto;
+	border: solid #7abce1;
+	border-width: 0px 2px 2px;
+	border-radius: 0px 0px 8px 8px;
+}
+.sub-name {
+	color: #34495E;
+	font-size: 20px;
+	font-weight: 550;
+	letter-spacing: 5px;
+	margin-left: 15px;
+}
+
+
+.acc-group {
+	padding-bottom: 5px;
+}
+
+.file-path {
+	font-size: 12px;
+	color: #b4c1d1;
+	margin-left: 15px;
+}
+
+.deadline {
+	font-size: 16px;
+	color: #b4c1d1;
+	margin-left: 5px;
+}
+
+.func {
+	width: 80px;
+	margin: 8px 20px;
+}
+
+.task-func {
+	display: flex;
+	justify-content: space-around;
+	height: 100px;
+}
+
+.func-around {
+	border: solid #74EDBE 1px;
+	border-radius: 8px;
+}
+
+#modal-content {
+	width:700px;
+	height: 200px;
+	margin:1.5em auto 0;
+	padding:10px 20px;
+	border:2px solid #aaa;
+	background:#fff;
+	z-index:2;
+	position:fixed;
+}
+
+.overlayall-sample {
+	display: none;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	overflow: scroll;
+	top: 0;
+	left: 0;
+	z-index: 100;
+	background: rgba(0,0,0,0.5);
+}
+.overlayall-sample p{
+	color: #FFF;
+	text-align: center;
+	font-size: 30px;
+	margin-top: 100px;
+	line-height: 32px;
+}
+.overlay-btn-sample p{
+background-color: #333;
+padding: 15px 20px;
+width: 100px;
+text-align: center;
+color: #FFF;
+}
+.add-task {
+	display: flex;
+	justify-content: flex-end;
+	margin: 20px 0px 0px 0px;
+}
+
+.add-task-btn {
+	padding: 0px 15px;
+	border: solid 1px #7ACBE1;
+	border-radius: 8px;
+	font-size: 20px;
+	font-weight: bold;
+	color: #7ACBE1;
+	text-decoration: none;
+}
+
+.cp_iptxt {
+	position: relative;
+	width: 400px;
+	margin: 40px;
+}
+.cp_iptxt input[type='text'] {
+	font: 15px/24px sans-serif;
+	box-sizing: border-box;
+	width: 100%;
+	padding: 0.3em;
+	transition: 0.3s;
+	letter-spacing: 1px;
+	color: #777777;
+	border: solid 2px #cccccc;
+	border-radius: 15px;
+	
+}
+input[type='text']:focus {
+	border: 2px solid #7ACBE1;
+	outline: none;
+	box-shadow: 0 0 5px 1px rgba(122, 203, 225, .5);
+}
+
+.form-container {
+	width: 500px;
+	height: 450px;
+	background-color: #ffffff;
+	border: solid 1px rgba(0,0,0,.2);;
+	border-radius: 8px;
+	display: flex;
+	justify-content: center;
+}
+
+.overlayall {
+	display: flex;
+	justify-content: center;
+}
+
+.form-center {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.close-form {
+	font-size: 20px;
+	color: #7ACBE1;
+	display: flex;
+	justify-content: flex-end;
+	margin: 10px 10px 0px;
+}
+
+.close-square {
+	border: solid 1px #7ACBE1;
+	width: 30px;
+	height: 30px;
+	display: flex;
+	justify-content: center;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: all 300ms 0s ease;
+}
+
+.close-square:hover {
+	border-radius: 15px;
+	background-color: #7ACBE1;
+	color: #f2f2f2;
+}
+
+.deadline-label {
+	font: 15px/24px sans-serif;
+	position: relative;
+	display: inline-block;
+	width: 150px;
+	height: 36px;
+	border: 2px solid #ccc;
+	border-radius: 15px;
+}
+
+.deadline-label::before {
+	position: absolute;
+	content: "";
+	top: 0px;
+	right: -43px;
+	width: 35px;
+	height: 35px;
+	background-color: #7ACBE1;
+	background-image: url("../static/calender.svg");
+	background-size: 70%;
+	background-repeat: no-repeat;
+	background-position: center;
+	border-radius: 10px;
+}
+
+input[type="datetime-local"] {
+  position: relative;
+  padding: 0 10px;
+  width: 200px;
+  height: 36px;
+  border: 0;
+  background: transparent;
+  box-sizing: border-box;
+  font-size: 14px;
+  color: #999;
+}
+
+input[type="datetime-local"]:focus {
+	border: 2px solid #7ACBE1;
+	outline: none;
+	box-shadow: 0 0 5px 1px rgba(122, 203, 225, .5);
+}
+
+input[type="datetime-local"]::-webkit-inner-spin-button{
+  -webkit-appearance: none;
+}
+input[type="datetime-local"]::-webkit-clear-button{
+  -webkit-appearance: none;
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator{
+  position: absolute;
+  right: 0px;
+  top: 0px;
+	left: 129px;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  color: transparent;
+  cursor: pointer;
+}
+
+.form-headline {
+	color: #7F7F7F;
+	font-weight: 800;
+}
+
+.submit-container {
+
+	display: flex;
+	justify-content: flex-end;
+	padding-right: 40px;
+}
+
+
+.submit-btn {
+	color: #7ACBE1;
+	background-color: #FFFFFF;
+	border: solid 1px #7ACBE1;
+	width: 50px;
+	height: 35px;
+	border-radius: 8px;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	font-weight: bold;
+}
+
+.submit-btn:hover {
+	color: #FFFFFF;
+	background-color:#7ACBE1;
+	cursor: pointer;
 }

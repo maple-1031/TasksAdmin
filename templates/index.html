@@ -1,83 +1,204 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="{{url_for('static', filename = 'head.css')}}">
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script src="{{url_for('static', filename = 'sort.js')}}"></script>
-    <script src="{{url_for('static', filename = 'appendlist.js')}}"></script>
-    <script type="text/javascript" language="JavaScript">
-      function cons() {
-        for (var i = 0; i < {{rep_num.list}}; i++) {
-          var newDeadline = document.createElement("div");
-          newDeadline.className = "deadline";
-          newDeadline.innerHTML = "okokok"
-          var newSubject = document.createElement("div");
-          newSubject.className = "subject";
-          newSubject.innerHTML = "example";
-          var newOpen = document.createElement("a");
-          newOpen.className = "open";
-          newOpen.innerHTML = "OPEN";
-          newOpen.href = "#";
+<head>
+<meta charset="utf-8" />
+<title></title>
+<link rel="stylesheet" href="{{url_for('static', filename='head.css')}}" />
+<link href="../static/btn.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="../static/head.css" rel="stylesheet" type="text/css" media="screen" />
+<script src="{{url_for('static', filename='appendlist.js')}}"></script> 
+<script type="text/javascript">
+	function cons(){
+		cs = {{ct|tojson}};
+		for (var i=0; i < {{rep_num}}; i++){
+			var newDeadline = document.createElement("div");
+			newDeadline.className = "deadline";
+			newDeadline.innerHTML = cs["current_tasks"][i]["deadline_str"].slice(11, 16);
+			var newSubject = document.createElement("div");
+			newSubject.className = "sub-name";
+			newSubject.innerHTML = cs["current_tasks"][i]["subject"];
 
-          var newlist = document.createElement("li");
-          newlist.className = "elem";
-          newlist.appendChild(newDeadline);
-          newlist.appendChild(newSubject);
-          newlist.appendChild(newOpen);
+			var newFile = document.createElement("div");
+			newFile.className = "file-path";
+			newFile.innerHTML = "課題２";
 
-          var board = document.getElementById("left_tasks");
-          board.appendChild(newlist)
-        }
-      }
-    </script>
-  </head>
-  <script Language="JavaScript">
-    function tDate()
-    {
-      const month_english_list = ['Jan.','Feb.','Mar.','Apr.','May','June','July','Aug.','Sept.','Oct.','Nov.','Dec.']
-      dt = new Date();
-      m = dt.getMonth();
-      m_en = month_english_list[m];
-      d = dt.getDate();
-      document.title = m_en + " " + d + " | What's new";
-    }</script>
+			var newMainContent = document.createElement("div");
+			newMainContent.className = "acc-btn";
+			newMainContent.appendChild(newDeadline);
+			newMainContent.appendChild(newSubject);
+			newMainContent.appendChild(newFile);
 
-  <body class="body-main" onload="tDate();cons()">
-    <header class="head-main">
-      <h1><a href="#"><img class="logo" src="{{url_for('static', filename = 'logo.svg')}}" alt="kaede"></a></h1>
-      <nav>
+			var newOpen = document.createElement("img");
+			newOpen.className = "func";
+			newOpen.src = "../static/open.svg";
+
+			var newOpenContainer = document.createElement("a");
+			newOpenContainer.className = "func-around";
+			newOpenContainer.href = "file:///D:/Users/maple/OneDrive - keio.jp/★課題★/.temp/st2019.pdf"
+			newOpenContainer.appendChild(newOpen);
+
+			var newSend = document.createElement("img");
+			newSend.className = "func";
+			newSend.src = "../static/send.svg";
+
+			var newSendContainer = document.createElement("a");
+			newSendContainer.className = "func-around";
+			newSendContainer.href = "#";
+			newSendContainer.appendChild(newSend);
+
+			var newRefresh = document.createElement("img");
+			newRefresh.className = "func";
+			newRefresh.src = "../static/refresh.svg";
+
+			var newRefreshContainer = document.createElement("a");
+			newRefreshContainer.className = "func-around";
+			newRefreshContainer.href = "#";
+			newRefreshContainer.appendChild(newRefresh);
+
+			var newDelete = document.createElement("img");
+			newDelete.className = "func";
+			newDelete.src = "../static/delete.svg";
+
+			var newDeleteContainer = document.createElement("a");
+			newDeleteContainer.className = "func-around";
+			newDeleteContainer.href = "#";
+			newDeleteContainer.appendChild(newDelete);
+
+			var newContent = document.createElement("div");
+			newContent.className = "task-func";
+			newContent.appendChild(newOpenContainer);
+			newContent.appendChild(newSendContainer);
+			newContent.appendChild(newRefreshContainer);
+			newContent.appendChild(newDeleteContainer);
+
+			var newSubContent = document.createElement("div");
+			newSubContent.className = "acc-content";
+			newSubContent.appendChild(newContent);
+
+			var newTask = document.createElement("div")
+			newTask.className = "acc-group";
+			newTask.appendChild(newMainContent);
+			newTask.appendChild(newSubContent);
+
+			var board = document.getElementById("left_tasks");
+			board.appendChild(newTask);
+		}
+	}// JavaScript Document
+</script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
+<script src="https://s.codepen.io/assets/libs/modernizr.js"></script> 
+<script src="../static/acc.js"></script> 
+<script type="text/javascript">
+	$(function() {
+		$('.add-task-btn').on('mouseenter', function(e) {
+			
+      var parentOffset = $(this).offset(),
+          relX = e.pageX - parentOffset.left,
+          relY = e.pageY - parentOffset.top;
+      $(this).find('span').css({top:relY, left:relX})
+    })
+    .on('mouseout', function(e) {
+      var parentOffset = $(this).offset(),
+          relX = e.pageX - parentOffset.left,
+          relY = e.pageY - parentOffset.top;
+      $(this).find('span').css({top:relY, left:relX})
+    });
+  $('[href=#]').click(function(){return false});
+});
+	</script> 
+<script type="text/javascript">
+		  $(function() {
+			   $(".add-task-btn").click(function() {
+					 $(".overlayall-sample").fadeIn();　/*ふわっと表示*/
+		   });
+			   $(".close-square").click(function() {
+					 $(".overlayall-sample").fadeOut();　/*ふわっと消える*/
+		   });
+		  });
+		</script>
+<script language="JavaScript">
+	function tDate(){
+		const month_english_list=['Jan.','Feb.','Mar.','Apr.','May','June','July','Aug.','Sept.','Oct.','Nov.','Dec.'];
+		dt = new Date();
+		m = dt.getMonth();
+		m_en = month_english_list[m];
+		d = dt.getDate();
+		document.title = m_en + " " + d + " | What's new";
+	}
+	</script>
+	
+</head>
+<body class="body-main" onload="tDate();cons();">
+<header class="head-main">
+    <h1> <a href="#"><img class="logo" src="../static/logo.svg" alt="kaede" /></a> </h1>
+	<!--<h1> <a href="#"><img class="logo" src="{{url_for('static', filename='logo.svg')}}" alt="kaede" /></a> </h1>-->
+    <nav>
         <ol class="navi">
-          <li><a href="#"><img class="icon" src="{{url_for('static', filename = 'home.svg')}}" alt="home"></a></li>
-          <li><a href="#"><img class="icon" src="{{url_for('static', filename = 'regist.svg')}}" alt="regist"></a></li>
-          <li><a href="#"><img class="icon" src="{{url_for('static', filename = 'keio.svg')}}" alt="keio"></a></li>
+			<li><a href="#"><img src="../static/home.svg" alt="home" class="icon"></a></li>
+			<li><a href="#"><img src="../static/regist.svg" alt="home" class="icon"></a></li>
+			<li><a href="#"><img src="../static/keio.svg" alt="home" class="icon"></a></li>
+            <!--<li> <a href="#"><img class="icon" src="{{url_for('static', filename='home.svg')}}" alt="home" /></a> </li>
+            <li> <a href="#"><img class="icon" src="{{url_for('static', filename='regist.svg')}}" alt="regist" /></a> </li>
+            <li> <a href="#"><img class="icon" src="{{url_for('static', filename='keio.svg')}}" alt="keio" /></a> </li>-->
         </ol>
-      </nav>
-    </header>
-    <div class="two-columns">
-      <article class="article">
-        <ul class="tasks" id="left_tasks">
-          <li class="elem">
-            <div class="deadline">
-              {{deadline.1}}
-            </div>
-            <div class="subject">
-              {{subject.val1}}
-            </div>
-            <a href="#" class="open">OPEN</a>
-          </li>
-        </ul>
-      </article>
-      <aside class="right">
-        <div class="submit">
-          <ul class="tasks" id="right_tasks">
-          </ul>
+    </nav>
+</header>
+<div class="two-columns">
+    <div style="display: flex; flex-direction: column;">
+        <div class="add-task">
+            <div class="add-task-btn">+<span></span></div>
         </div>
-        <div class="achive">
-        </div>
-      </aside>
+        <article class="article">
+            <div class="tasks acc-container" id="left_tasks">
+                <div class="acc-group">
+                    <div class="acc-btn">
+                        <div class="deadline">temp</div>
+                        <div class="sub-name">temp</div>
+                        <div class="file-path">temp</div>
+                    </div>
+                    <div class="acc-content">
+                        <div class="task-func"> <a class="func-around" href="#"><img src="../static/open.svg" alt="" class="func"></a> <a class="func-around" href="#"><img src="../static/send.svg" alt="" class="func"></a> <a class="func-around" href="#"><img src="../static/refresh.svg" alt="" class="func"></a> <a class="func-around" href="#"><img src="../static/delete.svg" alt="" class="func"></a> </div>
+                    </div>
+                </div>
+            </div>
+        </article>
     </div>
-  </body>
+    <aside class="right">
+        <div class="submit"></div>
+        <div class="achive">&nbsp;</div>
+    </aside>
+</div>
+<div class="overlayall-sample">
+    <div class="form-center">
+        <div class="form-container">
+            <form action="/" method="POST" class="task-form">
+                <div class="close-form">
+                    <div class="close-square">×</div>
+                </div>
+                <div class="cp_iptxt">
+					<div class="form-headline">科目名</div>
+                    <label class="ef">
+                        <input type="text" placeholder="ex) 機械工学創造演習" name="new-task-name">
+                    </label>
+                </div>
+                <div class="cp_iptxt">
+					<div class="form-headline">提出日</div>
+                    <label class="deadline-label">
+                        <input type="datetime-local" name="new-task-deadline">
+                    </label>
+                </div>
+				<div class="cp_iptxt">
+					<div class="form-headline">ファイルを選択</div>
+					<label class="file-label">
+						<input type="file" name="new-task-file">
+					</label>
+				</div>
+				<div class="submit-container">
+					<input type="submit" class="submit-btn" id="submit-btn-id" value="登録">
+				</div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
 </html>
