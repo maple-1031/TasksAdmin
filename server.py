@@ -8,7 +8,7 @@ Created on Mon Sep  7 22:48:13 2020
 import pandas as pd
 import numpy as np
 from scipy.stats import chi2_contingency
-from flask import Flask, redirect ,request,render_template,jsonify
+from flask import Flask, redirect ,request,render_template,jsonify, Response
 from flask_bootstrap import Bootstrap
 import json
 import requests
@@ -223,6 +223,43 @@ def check():
         current_tasks = json.load(f)
     
     return render_template('index.html', ct = current_tasks, rep_num = len(current_tasks["current_tasks"]))
+
+@nc.route("/", methods=["POST"])
+def post():
+    task = Task()
+    submit_task_name = request.form.get("new-task-name")
+    submit_task_deadline = request.form.get("new-task-deadline")
+    submit_task_deadline_str = " ".join(submit_task_deadline.split("T"))
+    submit_task_deadline = int(task.deadline_gen(" ".join(submit_task_deadline.split("T")) + ":00"))
+    submit_task_file = request.files.get("new-task-file")
+    
+    task.path = r"D:\Users\maple\OneDrive - keio.jp\★課題★\.temp"
+    task.subject = submit_task_name
+    task.deadline = submit_task_deadline
+    task.deadline_str = submit_task_deadline_str
+    task.task_hash = hash("".join([task.subject, task.deadline_str]))
+    temp_dict = {
+        "path":task.path,
+        "subject":task.subject,
+        "deadline_unix":task.deadline,
+        "deadline_str":task.deadline_str,
+        "deadline_day_str":task.deadline_str,
+        "task_hash":task.task_hash
+        }
+    
+    with open("current_tasks.json", mode="rt", encoding="utf-8") as f:
+        df = json.load(f)
+    df["current_tasks"].append(temp_dict)
+    
+    with open("current_tasks.json", mode="wt", encoding="utf-8") as f:
+        json.dump(df, f, indent=4, ensure_ascii=False)
+        
+    with open("current_tasks.json", mode="rt", encoding="utf-8") as f:
+        current_tasks = json.load(f)
+        
+    return render_template('index.html', ct = current_tasks, rep_num = len(current_tasks["current_tasks"]))
+
+
 
 if __name__ == '__main__':
     nc.run(host="0.0.0.0", port=8080, debug=False)

@@ -423,6 +423,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator{
 
 .submit-btn {
 	color: #7ACBE1;
+	background-color: #FFFFFF;
 	border: solid 1px #7ACBE1;
 	width: 50px;
 	height: 35px;
@@ -430,7 +431,6 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator{
 	display: flex;
 	justify-content: center;
 	align-content: center;
-	padding-top: 5px;
 	font-weight: bold;
 }
 

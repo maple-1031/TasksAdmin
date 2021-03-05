@@ -13,8 +13,7 @@
 		for (var i=0; i < {{rep_num}}; i++){
 			var newDeadline = document.createElement("div");
 			newDeadline.className = "deadline";
-			newDeadline.innerHTML = "XX:YY";
-
+			newDeadline.innerHTML = cs["current_tasks"][i]["deadline_str"].slice(11, 16);
 			var newSubject = document.createElement("div");
 			newSubject.className = "sub-name";
 			newSubject.innerHTML = cs["current_tasks"][i]["subject"];
@@ -131,12 +130,16 @@
 </head>
 <body class="body-main" onload="tDate();cons();">
 <header class="head-main">
-    <h1> <a href="#"><img class="logo" src="{{url_for('static', filename='logo.svg')}}" alt="kaede" /></a> </h1>
+    <h1> <a href="#"><img class="logo" src="../static/logo.svg" alt="kaede" /></a> </h1>
+	<!--<h1> <a href="#"><img class="logo" src="{{url_for('static', filename='logo.svg')}}" alt="kaede" /></a> </h1>-->
     <nav>
         <ol class="navi">
-            <li> <a href="#"><img class="icon" src="{{url_for('static', filename='home.svg')}}" alt="home" /></a> </li>
+			<li><a href="#"><img src="../static/home.svg" alt="home" class="icon"></a></li>
+			<li><a href="#"><img src="../static/regist.svg" alt="home" class="icon"></a></li>
+			<li><a href="#"><img src="../static/keio.svg" alt="home" class="icon"></a></li>
+            <!--<li> <a href="#"><img class="icon" src="{{url_for('static', filename='home.svg')}}" alt="home" /></a> </li>
             <li> <a href="#"><img class="icon" src="{{url_for('static', filename='regist.svg')}}" alt="regist" /></a> </li>
-            <li> <a href="#"><img class="icon" src="{{url_for('static', filename='keio.svg')}}" alt="keio" /></a> </li>
+            <li> <a href="#"><img class="icon" src="{{url_for('static', filename='keio.svg')}}" alt="keio" /></a> </li>-->
         </ol>
     </nav>
 </header>
@@ -149,9 +152,9 @@
             <div class="tasks acc-container" id="left_tasks">
                 <div class="acc-group">
                     <div class="acc-btn">
-                        <div class="deadline">10:45</div>
-                        <div class="sub-name">コンピューターシミュレーション</div>
-                        <div class="file-path">課題１</div>
+                        <div class="deadline">temp</div>
+                        <div class="sub-name">temp</div>
+                        <div class="file-path">temp</div>
                     </div>
                     <div class="acc-content">
                         <div class="task-func"> <a class="func-around" href="#"><img src="../static/open.svg" alt="" class="func"></a> <a class="func-around" href="#"><img src="../static/send.svg" alt="" class="func"></a> <a class="func-around" href="#"><img src="../static/refresh.svg" alt="" class="func"></a> <a class="func-around" href="#"><img src="../static/delete.svg" alt="" class="func"></a> </div>
@@ -162,36 +165,36 @@
     </div>
     <aside class="right">
         <div class="submit"></div>
-        <div class="achive"></div>
+        <div class="achive">&nbsp;</div>
     </aside>
 </div>
 <div class="overlayall-sample">
     <div class="form-center">
         <div class="form-container">
-            <form action="/" method="post" class="task-form">
+            <form action="/" method="POST" class="task-form">
                 <div class="close-form">
                     <div class="close-square">×</div>
                 </div>
                 <div class="cp_iptxt">
 					<div class="form-headline">科目名</div>
                     <label class="ef">
-                        <input type="text" placeholder="ex) 機械工学創造演習">
+                        <input type="text" placeholder="ex) 機械工学創造演習" name="new-task-name">
                     </label>
                 </div>
                 <div class="cp_iptxt">
 					<div class="form-headline">提出日</div>
                     <label class="deadline-label">
-                        <input type="datetime-local">
+                        <input type="datetime-local" name="new-task-deadline">
                     </label>
                 </div>
 				<div class="cp_iptxt">
 					<div class="form-headline">ファイルを選択</div>
 					<label class="file-label">
-						<input type="file">
+						<input type="file" name="new-task-file">
 					</label>
 				</div>
 				<div class="submit-container">
-					<div class="submit-btn">登録</div>
+					<input type="submit" class="submit-btn" id="submit-btn-id" value="登録">
 				</div>
             </form>
         </div>
