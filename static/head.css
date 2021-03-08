@@ -282,11 +282,12 @@ color: #FFF;
 }
 .add-task {
 	display: flex;
-	justify-content: flex-end;
+	padding-left: 60px;
+	justify-content: space-between;
 	margin: 20px 0px 0px 0px;
 }
 
-.add-task-btn {
+.upper-btn {
 	padding: 0px 15px;
 	border: solid 1px #7ACBE1;
 	border-radius: 8px;
@@ -470,4 +471,11 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator{
 .date-block {
 	margin-top: 20px;
 	font-size: 20px;
+}
+#refresh-btn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: 200;
+	font-size: 15px;
 }

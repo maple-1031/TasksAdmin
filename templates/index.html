@@ -103,38 +103,48 @@
 			taskDeadline = cs["current_tasks"][i]["deadline_day_str"];
 		}
 	}
-</script> 
+</script>
+	
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
 <script src="https://s.codepen.io/assets/libs/modernizr.js"></script> 
 <script src="../static/acc.js"></script> 
 <script type="text/javascript">
 	$(function() {
-		$('.add-task-btn').on('mouseenter', function(e) {
-			
-      var parentOffset = $(this).offset(),
-          relX = e.pageX - parentOffset.left,
-          relY = e.pageY - parentOffset.top;
-      $(this).find('span').css({top:relY, left:relX})
-    })
-    .on('mouseout', function(e) {
-      var parentOffset = $(this).offset(),
-          relX = e.pageX - parentOffset.left,
-          relY = e.pageY - parentOffset.top;
-      $(this).find('span').css({top:relY, left:relX})
-    });
-  $('[href=#]').click(function(){return false});
-});
-	</script> 
+		$('#add-task-btn').on('mouseenter', function(e) {	
+			var parentOffset = $(this).offset(),
+			relX = e.pageX - parentOffset.left,
+			relY = e.pageY - parentOffset.top;
+			$(this).find('span').css({top:relY, left:relX})
+    	})
+    	.on('mouseout', function(e) {
+		var parentOffset = $(this).offset(),
+          	relX = e.pageX - parentOffset.left,
+          	relY = e.pageY - parentOffset.top;
+      		$(this).find('span').css({top:relY, left:relX})
+    	});
+ 		$('[href=#]').click(function(){return false});
+	});
+</script> 
+
 <script type="text/javascript">
-		  $(function() {
-			   $(".add-task-btn").click(function() {
-					 $(".overlayall-sample").fadeIn();　/*ふわっと表示*/
-		   });
-			   $(".close-square").click(function() {
-					 $(".overlayall-sample").fadeOut();　/*ふわっと消える*/
-		   });
-		  });
-		</script>
+	$(function() {
+		$("#add-task-btn").click(function() {
+			$(".overlayall-sample").fadeIn();　/*ふわっと表示*/
+		});
+		$(".close-square").click(function() {
+			$(".overlayall-sample").fadeOut();　/*ふわっと消える*/
+		});
+	});
+</script>
+
+<script type="text/javascript">
+	$(function() {
+		$("#refresh-btn").click(function() {
+			$.post("/refresh");
+		});
+	});
+</script>
+	
 <script language="JavaScript">
 	function tDate(){
 		const month_english_list=['Jan.','Feb.','Mar.','Apr.','May','June','July','Aug.','Sept.','Oct.','Nov.','Dec.'];
@@ -144,7 +154,7 @@
 		d = dt.getDate();
 		document.title = m_en + " " + d + " | What's new";
 	}
-	</script>
+</script>
 	
 </head>
 <body class="body-main" onload="tDate();cons();">
@@ -165,7 +175,8 @@
 <div class="two-columns">
     <div style="display: flex; flex-direction: column;">
         <div class="add-task">
-            <div class="add-task-btn">+<span></span></div>
+			<div class="upper-btn" id="refresh-btn">更新<span></span></div>
+            <div class="upper-btn" id="add-task-btn">+<span></span></div>
         </div>
         <article class="article">
             <div class="tasks acc-container" id="left_tasks">
@@ -227,6 +238,7 @@
         </div>
     </div>
 </div>
+
 <script type="text/javascript">
 	const weeks = ['日', '月', '火', '水', '木', '金', '土']
 	const date = new Date()

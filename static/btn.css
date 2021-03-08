@@ -3,13 +3,13 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400|Raleway:300);
 /* CSS Document */
 
-.add-task-btn {
+.upper-btn {
 	position: relative;
 	display: block;
 	overflow: hidden;
 	text-transform: uppercase;
 }
-.add-task-btn span {
+.upper-btn span {
   position: absolute;
   display: block;
   width: 0;
@@ -20,13 +20,13 @@
   transform: translate(-50%, -50%);
   z-index: -1;
 }
-.add-task-btn:hover {
+.upper-btn:hover {
   color: #f2f2f2;
 }
-.add-task-btn:hover span {
+.upper-btn:hover span {
   width: 300%;
   height: 400%;
 }
-.add-task-btn:active {
+.upper-btn:active {
   background-color: #7ACBE1;
 }

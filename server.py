@@ -20,7 +20,7 @@ from pathlib import Path
 import sys
 import shutil
 import glob
-from datetime import datetime as dt
+import datetime as dt
 import importlib
 
 import settings
@@ -51,7 +51,7 @@ class Task():
         return int(data)+1
 
     def deadline_gen(self, dl_str):
-        dl_pre_int = dt.strptime(dl_str, "%Y-%m-%d %H:%M:%S")
+        dl_pre_int = dt.datetime.strptime(dl_str, "%Y-%m-%d %H:%M:%S")
         dl_int = dl_pre_int.timestamp()
         return dl_int
 
@@ -96,15 +96,15 @@ def check():
     with open("recent_refresh.json") as f:
         recent_refresh = json.load(f)
     
-    now = dt.now()
-    recent_refresh_time = dt.strptime(recent_refresh["recent_refresh"], "%Y-%m-%d %H:%M:%S")
+    now = dt.datetime.now()
+    recent_refresh_time = dt.datetime.strptime(recent_refresh["recent_refresh"], "%Y-%m-%d %H:%M:%S")
     
     if (now - recent_refresh_time).total_seconds() > 3600:
         
         with open("recent_refresh.json") as f:
             ref_dic = json.load(f)
             
-        ref_dic["recent_refresh"] = dt.now().strftime('%Y-%m-%d %H:%M:%S')
+        ref_dic["recent_refresh"] = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         
         with open("recent_refresh.json", "w") as f:
             json.dump(ref_dic, f, indent=4)
@@ -281,6 +281,18 @@ def delete():
     
     with open("current_tasks.json", mode="wt", encoding="utf-8") as f:
         json.dump(df, f, indent=4, ensure_ascii=False)
+        
+    return redirect("/")
+
+@nc.route("/refresh", methods = ["POST"])
+def refresh():
+    with open("recent_refresh.json") as f:
+        ref_dic = json.load(f)
+        
+    ref_dic["recent_refresh"] = (dt.datetime.now()+dt.timedelta(hours=-1)).strftime('%Y-%m-%d %H:%M:%S')
+    
+    with open("recent_refresh.json", "w") as f:
+        json.dump(ref_dic, f, indent=4)
         
     return redirect("/")
 
