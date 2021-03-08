@@ -280,7 +280,7 @@ def delete():
     with open("current_tasks.json", mode="rt", encoding="utf-8") as f:
         current_tasks = json.load(f)
         
-    return render_template('index.html', ct = current_tasks, rep_num = len(current_tasks["current_tasks"]))
+    return redirect("/")
 
 if __name__ == '__main__':
     nc.run(host="0.0.0.0", port=8080, debug=False)
