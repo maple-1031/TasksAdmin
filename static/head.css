@@ -61,7 +61,10 @@ aside {
 }
 
 .achive {
-  height: 50%;
+	height: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: stretch;
 }
 
 .right {
@@ -81,9 +84,12 @@ aside {
 }
 
 #left_tasks {
-  width: 62vw;
-  margin-left: 3vw;
-
+	width: 62vw;
+	margin-left: 3vw;
+	overflow: auto;
+}
+#left_tasks::-webkit-scrollbar {
+	display:none;
 }
 
 #right_tasks {
@@ -193,6 +199,7 @@ aside {
 
 .acc-group {
 	padding-bottom: 5px;
+	margin-left: 20px;
 }
 
 .file-path {
@@ -208,19 +215,33 @@ aside {
 }
 
 .func {
-	width: 80px;
-	margin: 8px 20px;
+	width: 30px;
+	height: 30px;
+	margin: 20px 20px;
+}
+
+.delete {
+	width: 30px;
+	height: 30px;
+	margin: 20px 20px;
+	text-indent: -9999px;
+	background: url("../static/delete.svg") left top no-repeat;
+	outline: none;
+}
+
+.delete:hover {
+	cursor: pointer;
 }
 
 .task-func {
 	display: flex;
 	justify-content: space-around;
-	height: 100px;
+	height: 70px;
 }
 
 .func-around {
-	border: solid #74EDBE 1px;
-	border-radius: 8px;
+	border: solid #b4c1d1 1px;
+	border-radius: 35px;
 }
 
 #modal-content {
@@ -438,4 +459,15 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator{
 	color: #FFFFFF;
 	background-color:#7ACBE1;
 	cursor: pointer;
+}
+
+.time {
+	display: flex;
+	align-items: center;
+	font-size: 5vw;
+}
+
+.date-block {
+	margin-top: 20px;
+	font-size: 20px;
 }

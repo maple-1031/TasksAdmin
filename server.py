@@ -203,7 +203,7 @@ def check():
             task.subject = i[0]
             task.deadline = int(task.deadline_gen(i[1]))
             task.deadline_str = i[1]
-            task.task_hash = hash("".join(i[:3]))
+            task.task_hash = str(hash("".join(i[:3])))
             temp_dict = {"path":task.path,
                          "subject":task.subject,
                          "deadline_unix":task.deadline,
@@ -216,6 +216,9 @@ def check():
         
             with open("current_tasks.json", mode="wt", encoding="utf-8") as f:
                 json.dump(df, f, indent=4, ensure_ascii=False)
+
+            df["current_tasks"] = sorted(df["current_tasks"], key=lambda x: x['deadline_unix'])
+
         
         #ここまで
     
@@ -237,19 +240,20 @@ def post():
     task.subject = submit_task_name
     task.deadline = submit_task_deadline
     task.deadline_str = submit_task_deadline_str
-    task.task_hash = hash("".join([task.subject, task.deadline_str]))
+    task.task_hash = str(hash("".join([task.subject, task.deadline_str])))
     temp_dict = {
         "path":task.path,
         "subject":task.subject,
         "deadline_unix":task.deadline,
         "deadline_str":task.deadline_str,
-        "deadline_day_str":task.deadline_str,
+        "deadline_day_str":task.deadline_str.split(" ")[0],
         "task_hash":task.task_hash
         }
     
     with open("current_tasks.json", mode="rt", encoding="utf-8") as f:
         df = json.load(f)
     df["current_tasks"].append(temp_dict)
+    df["current_tasks"] = sorted(df["current_tasks"], key=lambda x: x['deadline_unix'])
     
     with open("current_tasks.json", mode="wt", encoding="utf-8") as f:
         json.dump(df, f, indent=4, ensure_ascii=False)
@@ -259,7 +263,24 @@ def post():
         
     return render_template('index.html', ct = current_tasks, rep_num = len(current_tasks["current_tasks"]))
 
+@nc.route("/delete", methods = ["POST"])
+def delete():
+    delete_hash = request.form.get("delete_hash")
+    with open("current_tasks.json", mode="rt", encoding="utf-8") as f:
+        df = json.load(f)
+        hash_list = [d.get("task_hash") for d in df["current_tasks"]]
+        hash_index = hash_list.index(delete_hash)
+        df["current_tasks"].pop(hash_index)
+        df["current_tasks"] = sorted(df["current_tasks"], key=lambda x: x['deadline_unix'])
 
+    
+    with open("current_tasks.json", mode="wt", encoding="utf-8") as f:
+        json.dump(df, f, indent=4, ensure_ascii=False)
+        
+    with open("current_tasks.json", mode="rt", encoding="utf-8") as f:
+        current_tasks = json.load(f)
+        
+    return render_template('index.html', ct = current_tasks, rep_num = len(current_tasks["current_tasks"]))
 
 if __name__ == '__main__':
     nc.run(host="0.0.0.0", port=8080, debug=False)
