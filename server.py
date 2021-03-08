@@ -211,7 +211,8 @@ def check():
                          "deadline_day_str":task.deadline_str.split(" ")[0],
                          "task_hash":task.task_hash
                          }
-            if temp_dict not in list(df.values())[0]:
+            if (temp_dict not in list(df.values())[0]) and \
+                (temp_dict["task_hash"] not in [d.get("task_hash") for d in df["deleted_tasks"]]):
                 df["current_tasks"].append(temp_dict)
         
             with open("current_tasks.json", mode="wt", encoding="utf-8") as f:
@@ -270,15 +271,16 @@ def delete():
         df = json.load(f)
         hash_list = [d.get("task_hash") for d in df["current_tasks"]]
         hash_index = hash_list.index(delete_hash)
+        
+        df["deleted_tasks"].append(df["current_tasks"][hash_index])
+        
         df["current_tasks"].pop(hash_index)
         df["current_tasks"] = sorted(df["current_tasks"], key=lambda x: x['deadline_unix'])
+        df["deleted_tasks"] = sorted(df["deleted_tasks"], key=lambda x: x["deadline_unix"])
 
     
     with open("current_tasks.json", mode="wt", encoding="utf-8") as f:
         json.dump(df, f, indent=4, ensure_ascii=False)
-        
-    with open("current_tasks.json", mode="rt", encoding="utf-8") as f:
-        current_tasks = json.load(f)
         
     return redirect("/")
 
