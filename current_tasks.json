@@ -1,86 +1,42 @@
 {
     "current_tasks": [
         {
-            "path": "D:\\Users\\maple\\OneDrive - keio.jp\\★課題★\\.temp",
-            "subject": "画像認識コンテスト",
-            "deadline_unix": 1615820340,
-            "deadline_str": "2021-03-15 23:59",
-            "deadline_day_str": "2021-03-15",
-            "task_hash": "2622325370974576132"
+            "path": "D:\\Users\\maple\\OneDrive - keio.jp\\★課題★\\.temp\\hw01_chap4-1.pdf",
+            "subject": "流体力学",
+            "deadline_unix": 1618545600,
+            "deadline_str": "2021-04-16 13:00",
+            "deadline_day_str": "2021-04-16",
+            "task_hash": "529645259305380663",
+            "submit_url": "#"
         },
         {
-            "path": "D:\\Users\\maple\\OneDrive - keio.jp\\★課題★\\.temp",
-            "subject": "研究室宿題",
-            "deadline_unix": 1616511540,
-            "deadline_str": "2021-03-23 23:59",
-            "deadline_day_str": "2021-03-23",
-            "task_hash": "734271872492539218"
+            "path": "D:\\Users\\maple\\OneDrive - keio.jp\\★課題★\\.temp\\hw02_chap5-1.pdf",
+            "subject": "流体力学",
+            "deadline_unix": 1618891200.0,
+            "deadline_str": "2021-04-20 13:00",
+            "deadline_day_str": "2021-04-20",
+            "task_hash": "128341057807202053",
+            "submit_url": "https://lms.keio.jp/courses/14251/assignments/264882"
+        },
+        {
+            "path": "D:\\Users\\maple\\OneDrive - keio.jp\\★課題★\\.temp\\hw03_chap5-2.pdf",
+            "subject": "流体力学",
+            "deadline_unix": 1619150400.0,
+            "deadline_str": "2021-04-23 13:00",
+            "deadline_day_str": "2021-04-23",
+            "task_hash": "-1853750662922459",
+            "submit_url": "https://lms.keio.jp/courses/14251/assignments/264883"
+        },
+        {
+            "path": "D:\\Users\\maple\\OneDrive - keio.jp\\★課題★\\.temp\\課題_キャッシュフロー表.xlsx",
+            "subject": "金融リテラシー",
+            "deadline_unix": 1620226740.0,
+            "deadline_str": "2021-05-05 23:59",
+            "deadline_day_str": "2021-05-05",
+            "task_hash": "1821501778727735025",
+            "submit_url": "https://lms.keio.jp/courses/15572/assignments/153307"
         }
     ],
-    "deleted_tasks": [
-        {
-            "path": "",
-            "subject": "統計解析の基礎",
-            "deadline_unix": 1604070000,
-            "deadline_str": "2020-10-31 00:00:00",
-            "deadline_day_str": "2020-10-31",
-            "task_hash": "-7504514502975046836"
-        },
-        {
-            "path": "",
-            "subject": "応用解析第２",
-            "deadline_unix": 1607179800,
-            "deadline_str": "2020-12-05 23:50:00",
-            "deadline_day_str": "2020-12-05",
-            "task_hash": "-5707446980229947647"
-        },
-        {
-            "path": "",
-            "subject": "応用解析第２",
-            "deadline_unix": 1608389400,
-            "deadline_str": "2020-12-19 23:50:00",
-            "deadline_day_str": "2020-12-19",
-            "task_hash": "-5425451088126018800"
-        },
-        {
-            "path": "",
-            "subject": "応用解析第２",
-            "deadline_unix": 1608774300,
-            "deadline_str": "2020-12-24 10:45:00",
-            "deadline_day_str": "2020-12-24",
-            "task_hash": "-4515844603937596754"
-        },
-        {
-            "path": "",
-            "subject": "応用解析第２",
-            "deadline_unix": 1608800400,
-            "deadline_str": "2020-12-24 18:00:00",
-            "deadline_day_str": "2020-12-24",
-            "task_hash": "1883387731599899251"
-        },
-        {
-            "path": "",
-            "subject": "創造と倫理",
-            "deadline_unix": 1609167540,
-            "deadline_str": "2020-12-28 23:59:00",
-            "deadline_day_str": "2020-12-28",
-            "task_hash": "-5146906341533870101"
-        },
-        {
-            "path": "",
-            "subject": "創造と倫理",
-            "deadline_unix": 1609340400,
-            "deadline_str": "2020-12-31 00:00:00",
-            "deadline_day_str": "2020-12-31",
-            "task_hash": "-1462456166070850604"
-        },
-        {
-            "path": "D:\\Users\\maple\\OneDrive - keio.jp\\★課題★\\.temp",
-            "subject": "追いコン動画",
-            "deadline_unix": 1616252340,
-            "deadline_str": "2021-03-20 23:59",
-            "deadline_day_str": "2021-03-20",
-            "task_hash": "-3490020369181892053"
-        }
-    ]
+    "completed_tasks": [],
+    "deleted_tasks": []
 }

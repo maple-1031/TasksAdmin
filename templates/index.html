@@ -9,108 +9,12 @@
 <link href="../static/calender.css" rel="stylesheet" type="text/css" media="screen" />
 <script src="{{url_for('static', filename='appendlist.js')}}"></script>
 <!--<script src="../static/watch.js"></script>-->
-<script type="text/javascript">
-	function cons(){
-		cs = {{ct|tojson}};
-		var taskDeadline = 0;
-		for (var i=0; i < {{rep_num}}; i++){
-			var newDeadline = document.createElement("div");
-			newDeadline.className = "deadline";
-			newDeadline.innerHTML = cs["current_tasks"][i]["deadline_str"].slice(11, 16);
-			var newSubject = document.createElement("div");
-			newSubject.className = "sub-name";
-			newSubject.innerHTML = cs["current_tasks"][i]["subject"];
-
-			var newFile = document.createElement("div");
-			newFile.className = "file-path";
-			newFile.innerHTML = "課題２"; //未実装
-
-			var newMainContent = document.createElement("div");
-			newMainContent.className = "acc-btn";
-			newMainContent.appendChild(newDeadline);
-			newMainContent.appendChild(newSubject);
-			newMainContent.appendChild(newFile);
-
-			var newOpen = document.createElement("img");
-			newOpen.className = "func";
-			newOpen.src = "../static/open.svg";
-
-			var newOpenContainer = document.createElement("a");
-			newOpenContainer.className = "func-around";
-			newOpenContainer.href = cs["current_tasks"][i]["path"]
-			newOpenContainer.appendChild(newOpen);
-
-			var newSend = document.createElement("img");
-			newSend.className = "func";
-			newSend.src = "../static/send.svg";
-
-			var newSendContainer = document.createElement("a");
-			newSendContainer.className = "func-around";
-			newSendContainer.href = "#";
-			newSendContainer.appendChild(newSend);
-
-			var newRefresh = document.createElement("img");
-			newRefresh.className = "func";
-			newRefresh.src = "../static/refresh.svg";
-
-			var newRefreshContainer = document.createElement("a");
-			newRefreshContainer.className = "func-around";
-			newRefreshContainer.href = "#";
-			newRefreshContainer.appendChild(newRefresh);
-
-			var newDelete = document.createElement("input");
-			newDelete.type = "submit";
-			newDelete.className = "delete";
-			newDelete.name = "delete_hash";
-			newDelete.value = cs["current_tasks"][i]["task_hash"];
-			newDelete.alt = "削除";
-
-			var newDeleteContainer = document.createElement("form");
-			newDeleteContainer.method = "POST";
-			newDeleteContainer.action = "/delete";
-			newDeleteContainer.className = "func-around";
-			newDeleteContainer.appendChild(newDelete);
-
-			var newContent = document.createElement("div");
-			newContent.className = "task-func";
-			newContent.appendChild(newOpenContainer);
-			newContent.appendChild(newSendContainer);
-			newContent.appendChild(newRefreshContainer);
-			newContent.appendChild(newDeleteContainer);
-
-			var newSubContent = document.createElement("div");
-			newSubContent.className = "acc-content";
-			newSubContent.appendChild(newContent);
-
-			var newTask = document.createElement("div")
-			newTask.className = "acc-group";
-			newTask.appendChild(newMainContent);
-			newTask.appendChild(newSubContent);
-
-			if (taskDeadline != cs["current_tasks"][i]["deadline_day_str"]){
-				var dateBlock = document.createElement("div");
-				dateBlock.className = "date-block"
-				dateBlock.innerHTML = cs["current_tasks"][i]["deadline_day_str"];
-			}
-			
-			var board = document.getElementById("left_tasks");
-			if (taskDeadline != cs["current_tasks"][i]["deadline_day_str"]){
-				board.appendChild(dateBlock);
-			}
-			console.log(taskDeadline, cs["current_tasks"][i]["deadline_day_str"]);
-			board.appendChild(newTask);
-			
-			taskDeadline = cs["current_tasks"][i]["deadline_day_str"];
-		}
-	}
-</script>
-	
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
 <script src="https://s.codepen.io/assets/libs/modernizr.js"></script> 
 <script src="../static/acc.js"></script> 
 <script type="text/javascript">
 	$(function() {
-		$('#add-task-btn').on('mouseenter', function(e) {	
+		$('.upper-btn').on('mouseenter', function(e) {	
 			var parentOffset = $(this).offset(),
 			relX = e.pageX - parentOffset.left,
 			relY = e.pageY - parentOffset.top;
@@ -129,10 +33,12 @@
 <script type="text/javascript">
 	$(function() {
 		$("#add-task-btn").click(function() {
-			$(".overlayall-sample").fadeIn();　/*ふわっと表示*/
+			$("#overlay-new").fadeIn();
 		});
-		$(".close-square").click(function() {
-			$(".overlayall-sample").fadeOut();　/*ふわっと消える*/
+		$(document).on("click", ".close-square", function() {
+			$(".overlayall-sample").fadeOut();
+			$("#add-sub-name").val("");
+			$("#edit-form").remove();
 		});
 	});
 </script>
@@ -140,7 +46,18 @@
 <script type="text/javascript">
 	$(function() {
 		$("#refresh-btn").click(function() {
-			$.post("/refresh");
+			$.post("/refresh", function() {
+				location.reload();
+			});
+		});
+	});
+</script>
+	
+<script type="text/javascript">
+	$(function() {
+		$(document).on("click", ".edit-btn", function() {
+			genEdit($(this).attr("id"));
+			$("#overlay-edit").fadeIn();
 		});
 	});
 </script>
@@ -155,9 +72,157 @@
 		document.title = m_en + " " + d + " | What's new";
 	}
 </script>
+
+<script type="text/javascript">
+	function today() {
+		var dt = new Date();
+		var dt_str = dt.getFullYear() + "-" + (dt.getMonth()+1) + "-" + dt.getDate();
+		console.log(dt_str);
+		$(function() {
+			$(`td[data-date=${dt_str}]`).children().css("border", "solid #4C65AD 3px");
+		});
+	}
+</script>
+	
+<script type="text/javascript">
+	function cons(mode){
+		cs = {{cs|tojson}};
+		ct = {{ct|tojson}};
+		var taskDeadline = 0;
+		var rep_num = ct[mode].length;
+		for (var i=0; i < rep_num; i++){
+			var newDeadline = document.createElement("div");
+			newDeadline.className = "deadline";
+			newDeadline.innerHTML = ct[mode][i]["deadline_str"].slice(11, 16);
+			var newSubject = document.createElement("div");
+			newSubject.className = "sub-name";
+			newSubject.innerHTML = ct[mode][i]["subject"];
+
+			var newFile = document.createElement("div");
+			newFile.className = "file-path";
+			newFile.innerHTML = ct[mode][i]["path"]; //未実装
+
+			var newMainContent = document.createElement("div");
+			newMainContent.className = "acc-btn";
+			newMainContent.appendChild(newDeadline);
+			newMainContent.appendChild(newSubject);
+			newMainContent.appendChild(newFile);
+
+			var newOpen = document.createElement("img");
+			newOpen.className = "func";
+			newOpen.src = "../static/open.svg";
+
+			var newOpenContainer = document.createElement("a");
+			newOpenContainer.className = "func-around";
+			newOpenContainer.href = ct[mode][i]["path"]
+			newOpenContainer.appendChild(newOpen);
+
+			var newSend = document.createElement("img");
+			newSend.className = "func";
+			newSend.src = "../static/send.svg";
+
+			var newSendContainer = document.createElement("a");
+			newSendContainer.className = "func-around";
+			var subName = ct[mode][i]["subject"];
+			var sendURL = cs.find((v) => v.name == subName);
+			console.log(sendURL);
+			//newSendContainer.href = sendURL.cms_url;	各教科のトップページ
+			newSendContainer.href = ct[mode][i]["submit_url"];
+			newSendContainer.target = "_blank";
+			newSendContainer.appendChild(newSend);
+
+			var newRefresh = document.createElement("img");
+			newRefresh.className = "func";
+			newRefresh.src = "../static/refresh.svg";
+
+			var newRefreshContainer = document.createElement("div");
+			newRefreshContainer.className = "func-around edit-btn";
+			newRefreshContainer.id = ct[mode][i]["task_hash"];
+			newRefreshContainer.appendChild(newRefresh);
+
+			var newDelete = document.createElement("input");
+			newDelete.type = "submit";
+			newDelete.className = "delete";
+			newDelete.name = "delete_hash";
+			newDelete.value = ct[mode][i]["task_hash"];
+			newDelete.alt = "削除";
+
+			var newDeleteContainer = document.createElement("form");
+			newDeleteContainer.method = "POST";
+			newDeleteContainer.action = "/delete";
+			newDeleteContainer.className = "func-around";
+			newDeleteContainer.appendChild(newDelete);
+
+			var newContent = document.createElement("div");
+			newContent.className = "task-func";
+			newContent.appendChild(newOpenContainer);
+			newContent.appendChild(newSendContainer);
+			newContent.appendChild(newRefreshContainer);
+			//newContent.appendChild(newDeleteContainer);
+
+			var newSubContent = document.createElement("div");
+			newSubContent.className = "acc-content";
+			newSubContent.appendChild(newContent);
+
+			var newTask = document.createElement("div")
+			newTask.className = "acc-group";
+			var date_before_conversion = ct[mode][i]["deadline_day_str"].split("-");
+			var date_after_conversion = [date_before_conversion[0]];
+			if ((date_before_conversion[1].charAt(0)) == "0") {
+				date_after_conversion.push(date_before_conversion[1].charAt(1));
+			} else {
+				date_after_conversion.push(date_before_conversion[1]);
+			}
+			if ((date_before_conversion[2].charAt(0)) == "0") {
+				date_after_conversion.push(date_before_conversion[2].charAt(1));
+			} else {
+				date_after_conversion.push(date_before_conversion[2]);
+			}
+			arg_date = date_after_conversion.join("-");
+			newTask.setAttribute("data-date", arg_date);
+			newTask.appendChild(newMainContent);
+			newTask.appendChild(newSubContent);
+
+			if (taskDeadline != ct[mode][i]["deadline_day_str"]){
+				var dateBlock = document.createElement("div");
+				dateBlock.className = "date-block"
+				dateBlock.innerHTML = ct[mode][i]["deadline_day_str"].split("-").slice(1, 3).join("月")+"日";
+			}
+			
+			var board = document.getElementById("left_tasks");
+			if (taskDeadline != ct[mode][i]["deadline_day_str"]){
+				board.appendChild(dateBlock);
+			}
+			board.appendChild(newTask);
+			
+			taskDeadline = ct[mode][i]["deadline_day_str"];
+			
+			if (mode == "current_tasks"){
+				document.body.insertAdjacentHTML('beforeend', `<style>td[data-date="${arg_date}"] div::after {content: "●"; font-size: 1px; color: #7f7f7f; position: absolute; top: 18px; left: 0; right: 0;}</style>`);
+			}
+
+		}
+	}
+</script>
+<script>
+	function tableGen() {
+		var subTable = document.getElementById("sub-table");
+		for(var i=0;i<cs.length;i++){
+			var task_wd = cs[i]["weekday"];
+			var task_pr = cs[i]["period"];
+			var task_nm = cs[i]["name"];
+			
+			console.log(task_wd);
+			if(task_wd<7){
+				subTable.rows[task_pr].cells[task_wd].innerHTML = task_nm;
+			}
+		}
+	}
+	
+</script>
 	
 </head>
-<body class="body-main" onload="tDate();cons();">
+<body class="body-main" onload="tDate();cons('current_tasks');today();tableGen();">
 <header class="head-main">
     <h1> <a href="#"><img class="logo" src="../static/logo.svg" alt="kaede" /></a> </h1>
 	<!--<h1> <a href="#"><img class="logo" src="{{url_for('static', filename='logo.svg')}}" alt="kaede" /></a> </h1>-->
@@ -165,7 +230,7 @@
         <ol class="navi">
 			<li><a href="#"><img src="../static/home.svg" alt="home" class="icon"></a></li>
 			<li><a href="#"><img src="../static/regist.svg" alt="home" class="icon"></a></li>
-			<li><a href="#"><img src="../static/keio.svg" alt="home" class="icon"></a></li>
+			<li><a href="https://lms.keio.jp/" target="_blank"><img src="../static/keio.svg" alt="home" class="icon"></a></li>
             <!--<li> <a href="#"><img class="icon" src="{{url_for('static', filename='home.svg')}}" alt="home" /></a> </li>
             <li> <a href="#"><img class="icon" src="{{url_for('static', filename='regist.svg')}}" alt="regist" /></a> </li>
             <li> <a href="#"><img class="icon" src="{{url_for('static', filename='keio.svg')}}" alt="keio" /></a> </li>-->
@@ -176,11 +241,16 @@
     <div style="display: flex; flex-direction: column;">
         <div class="add-task">
 			<div class="upper-btn" id="refresh-btn">更新<span></span></div>
+			<group class="inline-radio">
+				<div><input type="radio" name="render-mode" value="未完了" checked><label>未完了</label></div>
+				<div><input type="radio" name="render-mode" value="完了"><label>完了</label></div>
+				<div><input type="radio" name="render-mode" value="削除"><label>削除</label></div>
+			</group>
             <div class="upper-btn" id="add-task-btn">+<span></span></div>
         </div>
         <article class="article">
             <div class="tasks acc-container" id="left_tasks">
-                <div class="acc-group">
+                <!--<div class="acc-group">
                     <div class="acc-btn">
                         <div class="deadline">temp</div>
                         <div class="sub-name">temp</div>
@@ -189,7 +259,7 @@
                     <div class="acc-content">
                         <div class="task-func"> <a class="func-around" href="#"><img src="../static/open.svg" alt="" class="func"></a> <a class="func-around" href="#"><img src="../static/send.svg" alt="" class="func"></a> <a class="func-around" href="#"><img src="../static/refresh.svg" alt="" class="func"></a> <form class="func-around" href="#"><input type="image" src="../static/delete.svg" alt="delete" class="delete" value="hash"></form> </div>
                     </div>
-                </div>
+                </div>-->
             </div>
         </article>
     </div>
@@ -201,23 +271,85 @@
 		</div>
         <div class="achive">
 			<div class="time">
-			    12:50:52
+			    
 			</div>
 		</div>
     </aside>
 </div>
-<div class="overlayall-sample">
+<div class="overlayall-sample" id="overlay-new">
     <div class="form-center">
         <div class="form-container">
-            <form action="/" method="POST" class="task-form">
+            <form action="/add" method="POST" class="task-form" enctype="multipart/form-data" autocomplete="off">
                 <div class="close-form">
                     <div class="close-square">×</div>
                 </div>
                 <div class="cp_iptxt">
 					<div class="form-headline">科目名</div>
                     <label class="ef">
-                        <input type="text" placeholder="ex) 機械工学創造演習" name="new-task-name">
+                        <input type="text" class="input-subject" id="add-sub-name" name="new-task-name">
                     </label>
+                    <div class="select-container">
+                        <div class="sub-select">
+                            <table class="sub-table" id="sub-table" width="500" height="350" border="1">
+                                <tbody>
+                                    <tr>
+                                        <th scope="col">&nbsp;</th>
+                                        <th scope="col">月</th>
+                                        <th scope="col">火</th>
+                                        <th scope="col">水</th>
+                                        <th scope="col">木</th>
+                                        <th scope="col">金</th>
+                                        <th scope="col">土</th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>てすと</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">4</th>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">5</th>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div class="cp_iptxt">
 					<div class="form-headline">提出日</div>
@@ -238,7 +370,12 @@
         </div>
     </div>
 </div>
-
+	
+<div class="overlayall-sample" id="overlay-edit">
+    <div class="form-center">
+        <div class="form-container" id="edit-form-container"></div>
+    </div>
+</div>
 <script type="text/javascript">
 	const weeks = ['日', '月', '火', '水', '木', '金', '土']
 	const date = new Date()
@@ -267,7 +404,7 @@
 		const startDate = new Date(year, month - 1, 1) // 月の最初の日を取得
 		const endDate = new Date(year, month,  0) // 月の最後の日を取得
 		const endDayCount = endDate.getDate() // 月の末日
-		const lastMonthEndDate = new Date(year, month - 2, 0) // 前月の最後の日の情報
+		const lastMonthEndDate = new Date(year, month - 1, 0) // 前月の最後の日の情報
 		const lastMonthendDayCount = lastMonthEndDate.getDate() // 前月の末日
 		const startDay = startDate.getDay() // 月の最初の日の曜日を取得
 		let dayCount = 1 // 日にちのカウント
@@ -288,14 +425,14 @@
 				if (w == 0 && d < startDay) {
 					// 1行目で1日の曜日の前
 					let num = lastMonthendDayCount - startDay + d + 1
-					calendarHtml += '<td class="is-disabled">' + num + '</td>'
+					calendarHtml += `<td class="is-disabled" data-date="${year}-${month-1}-${num}"><div style="position: relative;">${num}</div></td>`
 				} else if (dayCount > endDayCount) {
 					// 末尾の日数を超えた
 					let num = dayCount - endDayCount
-					calendarHtml += '<td class="is-disabled">' + num + '</td>'
+					calendarHtml += `<td class="is-disabled" data-date="${year}-${month+1}-${num}"><div style="position: relative;">${num}</div></td>`
 					dayCount++
 				} else {
-					calendarHtml += `<td class="calendar_td" data-date="${year}/${month}/${dayCount}">${dayCount}</td>`
+					calendarHtml += `<td class="calendar_td" data-date="${year}-${month}-${dayCount}"><div style="position: relative;">${dayCount}</div></td>`
 					dayCount++
 				}
 			}
@@ -307,8 +444,7 @@
 	}
 
 	function moveCalendar(e) {
-		document.querySelector('#calendar').innerHTML = ''
-
+		document.querySelector('#calendar').innerHTML = '';
 		if (e.target.id === 'prev') {
 			month--
 
@@ -327,11 +463,12 @@
 			}
 		}
 
-		showCalendar(year, month)
+		showCalendar(year, month);
+		today();
 	}
 
-	document.querySelector('#prev').addEventListener('click', moveCalendar)
-	document.querySelector('#next').addEventListener('click', moveCalendar)
+	document.querySelector('#prev').addEventListener('click', moveCalendar);
+	document.querySelector('#next').addEventListener('click', moveCalendar);
 
 	document.addEventListener("click", function(e) {
 		if(e.target.classList.contains("calendar_td")) {
@@ -339,7 +476,149 @@
 		}
 	})
 
-	showCalendar(year, month)
+	showCalendar(year, month);
+</script>
+
+<script type="text/javascript">
+	function genEdit(hash) {
+		var bd = document.body;
+		
+		var editCloseBtn = document.createElement("div");
+		editCloseBtn.className = "close-square";
+		editCloseBtn.innerHTML = "×";
+		
+		var editCloseForm = document.createElement("div");
+		editCloseForm.className = "close-form";
+		editCloseForm.appendChild(editCloseBtn);
+		
+		var editTaskName = document.createElement("input");
+		editTaskName.type = "text";
+		editTaskName.id = hash;
+		editTaskName.className = "input-subject";
+		editTaskName.name = "edit-task-name";
+		editTaskName.defaultValue = ct.current_tasks.find((v) => v.task_hash == hash).subject;
+		
+		var editTaskLabel = document.createElement("label");
+		editTaskLabel.className = "ef";
+		editTaskLabel.appendChild(editTaskName);
+		
+		var editTaskNameTitle = document.createElement("div");
+		editTaskNameTitle.className = "form-headline";
+		editTaskNameTitle.innerHTML = "科目名";
+		
+		var editTask = document.createElement("div");
+		editTask.className = "cp_iptxt";
+		editTask.appendChild(editTaskNameTitle)
+		editTask.appendChild(editTaskLabel);
+		
+		var editTimeInput = document.createElement("input");
+		editTimeInput.type = "datetime-local";
+		editTimeInput.name = "edit-task-deadline";
+		editTimeInput.value = ct.current_tasks.find((v) => v.task_hash == hash).deadline_str.split(" ").join("T");
+		
+		var editTimeLabel = document.createElement("label");
+		editTimeLabel.className = "deadline-label";
+		editTimeLabel.appendChild(editTimeInput);
+		
+		var editTimeTitle = document.createElement("div");
+		editTimeTitle.className = "form-headline";
+		editTimeTitle.innerHTML = "提出日";
+		
+		var editTime = document.createElement("div");
+		editTime.className = "cp_iptxt";
+		editTime.appendChild(editTimeTitle);
+		editTime.appendChild(editTimeLabel);
+		
+		var editSubmit = document.createElement("input");
+		editSubmit.type = "submit";
+		editSubmit.className = "submit-btn";
+		editSubmit.id = "submit-btn-id";
+		editSubmit.value = "登録";
+		
+		var editDelete = document.createElement("div");
+		editDelete.className = "delete-btn";
+		editDelete.innerHTML = "削除";
+		editDelete.id = hash;
+		
+		var editSubmitContainer = document.createElement("div");
+		editSubmitContainer.className = "submit-container";
+		editSubmitContainer.appendChild(editDelete);
+		editSubmitContainer.appendChild(editSubmit);
+		
+		var unseenInput = document.createElement("input");
+		unseenInput.type = "hidden";
+		unseenInput.name = "edit-task-hash";
+		unseenInput.value = hash;
+		
+		var editForm = document.createElement("form");
+		editForm.action = "/edit";
+		editForm.method = "POST";
+		editForm.className = "task-form";
+		editForm.id = "edit-form";
+		editForm.appendChild(editCloseForm);
+		editForm.appendChild(editTask);
+		editForm.appendChild(editTime);
+		editForm.appendChild(unseenInput);
+		editForm.appendChild(editSubmitContainer);
+		
+		var editFormContainer = document.getElementById("edit-form-container");
+		editFormContainer.appendChild(editForm);
+	}
+</script>
+<script type="text/javascript">
+	$(function() {
+		$(document).on("click", ".delete-btn", function() {
+			$.post("/delete", `delete_hash=${$(this).attr("id")}`, function() {
+				location.reload();
+			})
+		});
+	});
+</script>
+<script type="text/javascript">
+	$(function() {
+		$(document).on("mouseover", ".acc-group", function () {
+			var hovered_task_date = $(this).data("date");
+			$(`td[data-date=${hovered_task_date}]`).children().css("background-color", "#7acbe1");
+		});
+	});
+	$(function() {
+		$(document).on("mouseout", ".acc-group", function() {
+			var hovered_task_date = $(this).data("date");
+			$(`td[data-date=${hovered_task_date}]`).children().css("background-color", "#f8f8f8");
+		});
+	});	
+</script>
+	
+<script type="text/javascript">
+	$("input:radio[name='render-mode']").change(function() {
+		$("#left_tasks").empty();
+		var renderMode = $("input:radio[name='render-mode']:checked").val();
+		if(renderMode == "未完了") {
+			cons("current_tasks");
+		}else if(renderMode == "完了") {
+			cons("completed_tasks");
+		}else if(renderMode == "削除") {
+			cons("deleted_tasks");
+		}
+	});
+</script>
+<script type="text/javascript">
+	$(function() {
+		$(document).on("focusin", ".input-subject", function (){
+			$(".select-container").fadeIn();
+		});
+		$(document).on("focusout", ".input-subject", function() {
+			$(".select-container").delay(100).fadeOut();
+		})
+	});
+
+</script>
+<script>
+	$(function() {
+		$(document).on("click", "#sub-table td", function() {
+			$("#add-sub-name").val($(this).text());
+		});
+	});
 </script>
 </body>
 </html>

@@ -6,33 +6,38 @@
     flex-wrap: wrap;
 }
 
-section {
+div#calendar section {
     margin: 10px;
 }
 
-h1 {
+div#calendar h1 {
     font-size: 18px;
 }
 
-table {
+div table {
     border-spacing: 0;
     border-collapse: collapse;
 }
 
-td {
-    border: 1px solid #ddd;
+div#calendar td {
     padding: 5px;
     text-align: center;
 }
 
-td:first-child {
+div#calendar td div {
+	width: 30px;
+	height: 30px;	
+	border-radius: 15px;
+}
+
+div#calendar td:first-child {
     color: red;
 }
 
-td:last-child {
+div#calendar td:last-child {
     color: royalblue;
 }
 
-td.is-disabled {
+div#calendar td.is-disabled {
     color: #ccc;
 }

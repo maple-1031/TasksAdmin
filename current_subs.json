@@ -1,0 +1,114 @@
+[
+    {
+        "name": "コンピュータグラフィクス",
+        "lecturer": "",
+        "id": "05936",
+        "weekday": "1",
+        "period": "2",
+        "cms_url": "https://lms.keio.jp/courses/sis_course_id:J20213-9206/"
+    },
+    {
+        "name": "航空宇宙工学",
+        "lecturer": "",
+        "id": "06598",
+        "weekday": "1",
+        "period": "4",
+        "cms_url": "#"
+    },
+    {
+        "name": "先進材料の力学と数値シミュレーション",
+        "lecturer": "",
+        "id": "12590",
+        "weekday": "2",
+        "period": "2",
+        "cms_url": "https://lms.keio.jp/courses/sis_course_id:J20213-44699/"
+    },
+    {
+        "name": "流体力学",
+        "lecturer": "",
+        "id": "01433",
+        "weekday": "2",
+        "period": "3",
+        "cms_url": "https://lms.keio.jp/courses/sis_course_id:J20213-30148/"
+    },
+    {
+        "name": "エネルギー変換工学",
+        "lecturer": "",
+        "id": "02076",
+        "weekday": "2",
+        "period": "4",
+        "cms_url": "https://lms.keio.jp/courses/sis_course_id:J20213-8672/"
+    },
+    {
+        "name": "熱・物質移動論",
+        "lecturer": "",
+        "id": "03790",
+        "weekday": "2",
+        "period": "4",
+        "cms_url": "https://lms.keio.jp/courses/sis_course_id:J20213-8661/"
+    },
+    {
+        "name": "宇宙物理学",
+        "lecturer": "",
+        "id": "06048",
+        "weekday": "3",
+        "period": "1",
+        "cms_url": "#"
+    },
+    {
+        "name": "微生物学",
+        "lecturer": "",
+        "id": "06029",
+        "weekday": "3",
+        "period": "2",
+        "cms_url": "https://lms.keio.jp/courses/sis_course_id:J20213-9266/"
+    },
+    {
+        "name": "金融リテラシー",
+        "lecturer": "",
+        "id": "01653",
+        "weekday": "3",
+        "period": "5",
+        "cms_url": "https://lms.keio.jp/courses/sis_course_id:J20213-34544/"
+    },
+    {
+        "name": "流体力学",
+        "lecturer": "",
+        "id": "01433",
+        "weekday": "5",
+        "period": "3",
+        "cms_url": "https://lms.keio.jp/courses/sis_course_id:J20213-30148/"
+    },
+    {
+        "name": "エネルギー変換工学",
+        "lecturer": "",
+        "id": "02076",
+        "weekday": "5",
+        "period": "4",
+        "cms_url": "https://lms.keio.jp/courses/sis_course_id:J20213-8672/"
+    },
+    {
+        "name": "熱・物質移動論",
+        "lecturer": "",
+        "id": "03790",
+        "weekday": "5",
+        "period": "4",
+        "cms_url": "https://lms.keio.jp/courses/sis_course_id:J20213-8661/"
+    },
+    {
+        "name": "地球環境科学Ⅰ",
+        "lecturer": "",
+        "id": "06052",
+        "weekday": "6",
+        "period": "2",
+        "cms_url": "https://lms.keio.jp/courses/sis_course_id:J20213-9270/"
+    },
+    {
+        "name": "卒業研究",
+        "lecturer": "",
+        "id": "04925",
+        "weekday": "8",
+        "period": "8",
+        "cms_url": "#"
+    }
+]
