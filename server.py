@@ -25,6 +25,7 @@ import datetime as dt
 import importlib
 import pprint
 
+import cms_task
 import settings
 importlib.reload(settings)
 
@@ -222,12 +223,14 @@ def check():
     
         with open("current_tasks.json", mode="wt", encoding="utf-8") as f:
             json.dump(df, f, indent=4, ensure_ascii=False)
+            
+        cms_task.main()
     
     with open("current_tasks.json", mode="rt", encoding="utf-8") as f:
         current_tasks = json.load(f)
     with open("current_subs.json", mode="rt", encoding="utf-8") as f:
         current_subs = json.load(f)
-    
+        
     return render_template('index.html', ct = current_tasks, cs = current_subs)
 
 @nc.route("/add", methods=["POST"])

@@ -12,7 +12,7 @@
         {
             "path": "D:\\Users\\maple\\OneDrive - keio.jp\\★課題★\\.temp\\hw02_chap5-1.pdf",
             "subject": "流体力学",
-            "deadline_unix": 1618891200.0,
+            "deadline_unix": 1618891200,
             "deadline_str": "2021-04-20 13:00",
             "deadline_day_str": "2021-04-20",
             "task_hash": "128341057807202053",
@@ -21,7 +21,7 @@
         {
             "path": "D:\\Users\\maple\\OneDrive - keio.jp\\★課題★\\.temp\\hw03_chap5-2.pdf",
             "subject": "流体力学",
-            "deadline_unix": 1619150400.0,
+            "deadline_unix": 1619150400,
             "deadline_str": "2021-04-23 13:00",
             "deadline_day_str": "2021-04-23",
             "task_hash": "-1853750662922459",
@@ -30,7 +30,7 @@
         {
             "path": "D:\\Users\\maple\\OneDrive - keio.jp\\★課題★\\.temp\\課題_キャッシュフロー表.xlsx",
             "subject": "金融リテラシー",
-            "deadline_unix": 1620226740.0,
+            "deadline_unix": 1620226740,
             "deadline_str": "2021-05-05 23:59",
             "deadline_day_str": "2021-05-05",
             "task_hash": "1821501778727735025",
