@@ -32,7 +32,7 @@ def cms_dl(dl_date, dl_time):
     jp_date = ["月", "火", "水", "木", "金", "土", "日"]
     if "曜" in list(dl_date):
         date_difference = jp_date.index(dl_date[0]) - today_date
-        if date_difference < 0:
+        if date_difference <= 0:
             date_difference = 7 + date_difference
             
         dl_day = dt.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) + dt.timedelta(days=date_difference) + dt.timedelta(hours=int(dl_time.split(".")[0])) + dt.timedelta(minutes=int(dl_time.split(".")[1]))
@@ -96,8 +96,9 @@ def main():
     
     for element in dash_div_list:
         new_element = element.find_element_by_xpath(".//span")
-        if new_element.text.split(" ")[-1] == "課題":
+        if new_element.text[-2:] == "課題":
             click_element = element.find_element_by_xpath(".//span/parent::div[@class='PlannerItem-styles__type']/following-sibling::div[@class='PlannerItem-styles__title']/a").get_attribute("href")
+            print(new_element.text)
             dash_task_list.append(click_element)
             print(click_element)
     
@@ -124,31 +125,31 @@ def main():
             task.task_hash = str(hash("".join([task.subject, task.deadline_str])))
             hash_list = [x["task_hash"] for x in df["current_tasks"]]
             
-            
-        try:
-            task_click = driver.find_element_by_xpath("//a[@class='instructure_file_link']")
-        except:
-            pass
-        else:
-            
-            if task.task_hash not in hash_list:
+        if task.task_hash not in hash_list:    
+            try:
+                task_click = driver.find_element_by_xpath("//a[@class='instructure_file_link']")
+            except:
+                task.path = r"D:\Users\maple\OneDrive - keio.jp\★課題★\.temp"
+            else:
                 task_click.click()
                 file_name = driver.find_element_by_xpath("//a[@class='instructure_file_link']").get_attribute("title")
-                
-                
                 task.path = rf"D:\Users\maple\OneDrive - keio.jp\★課題★\.temp\{file_name}"
-                driver.close()
-                temp_dict = {
-                    "path":task.path,
-                    "subject":task.subject,
-                    "deadline_unix":task.deadline,
-                    "deadline_str":task.deadline_str,
-                    "deadline_day_str":task.deadline_str.split(" ")[0],
-                    "task_hash":task.task_hash,
-                    "submit_url": url
-                }
+            
+            temp_dict = {
+                "path":task.path,
+                "subject":task.subject,
+                "deadline_unix":task.deadline,
+                "deadline_str":task.deadline_str,
+                "deadline_day_str":task.deadline_str.split(" ")[0],
+                "task_hash":task.task_hash,
+                "submit_url": url
+            }
+            
+            if temp_dict["deadline_unix"] != 0:
                 df["current_tasks"].append(temp_dict)
                 df["current_tasks"] = sorted(df["current_tasks"], key=lambda x: x['deadline_unix'])
+        
+        driver.close()
     
     with open("current_tasks.json", mode="wt", encoding="utf-8") as f:
         json.dump(df, f, indent=4, ensure_ascii=False)

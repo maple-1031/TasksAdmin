@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+zone_2.py
+.pylint.d/classify_level11.stats
+.pylint.d/server1.stats

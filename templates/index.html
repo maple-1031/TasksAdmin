@@ -77,7 +77,6 @@
 	function today() {
 		var dt = new Date();
 		var dt_str = dt.getFullYear() + "-" + (dt.getMonth()+1) + "-" + dt.getDate();
-		console.log(dt_str);
 		$(function() {
 			$(`td[data-date=${dt_str}]`).children().css("border", "solid #4C65AD 3px");
 		});
@@ -121,14 +120,13 @@
 			newSend.className = "func";
 			newSend.src = "../static/send.svg";
 
-			var newSendContainer = document.createElement("a");
-			newSendContainer.className = "func-around";
+			var newSendContainer = document.createElement("div");
+			newSendContainer.className = "func-around send-btn";
 			var subName = ct[mode][i]["subject"];
 			var sendURL = cs.find((v) => v.name == subName);
-			console.log(sendURL);
 			//newSendContainer.href = sendURL.cms_url;	各教科のトップページ
-			newSendContainer.href = ct[mode][i]["submit_url"];
-			newSendContainer.target = "_blank";
+			newSendContainer.id = ct[mode][i]["task_hash"];
+			newSendContainer.setAttribute("data-url", ct[mode][i]["submit_url"]);
 			newSendContainer.appendChild(newSend);
 
 			var newRefresh = document.createElement("img");
@@ -212,7 +210,6 @@
 			var task_pr = cs[i]["period"];
 			var task_nm = cs[i]["name"];
 			
-			console.log(task_wd);
 			if(task_wd<7){
 				subTable.rows[task_pr].cells[task_wd].innerHTML = task_nm;
 			}
@@ -376,6 +373,22 @@
         <div class="form-container" id="edit-form-container"></div>
     </div>
 </div>
+
+<div class="overlayall-sample" id="send-warning-container">
+	<div class="send-warning-center">
+		<div class="send-warning">
+            <div style="width:100%">
+                <p><span id="warning-file"></span> を</p>
+                <p>提出しますか？</p>
+                <div class="send-btn-container">
+                    <div class="send-cancel">閉じる</div>
+					<div class="send-action">提出</div>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
 	const weeks = ['日', '月', '火', '水', '木', '金', '土']
 	const date = new Date()
@@ -496,7 +509,15 @@
 		editTaskName.id = hash;
 		editTaskName.className = "input-subject";
 		editTaskName.name = "edit-task-name";
-		editTaskName.defaultValue = ct.current_tasks.find((v) => v.task_hash == hash).subject;
+		if($("input:radio[name='render-mode']:checked").val() == "未完了") {
+			mode = "current_tasks";
+		} else if($("input:radio[name='render-mode']:checked").val() == "完了") {
+			mode = "completed_tasks";
+		} else if ($("input:radio[name='render-mode']:checked").val() == "削除") {
+			mode = "deleted_tasks";
+		}
+		
+		editTaskName.defaultValue = ct[mode].find((v) => v.task_hash == hash).subject;
 		
 		var editTaskLabel = document.createElement("label");
 		editTaskLabel.className = "ef";
@@ -514,7 +535,7 @@
 		var editTimeInput = document.createElement("input");
 		editTimeInput.type = "datetime-local";
 		editTimeInput.name = "edit-task-deadline";
-		editTimeInput.value = ct.current_tasks.find((v) => v.task_hash == hash).deadline_str.split(" ").join("T");
+		editTimeInput.value = ct[mode].find((v) => v.task_hash == hash).deadline_str.split(" ").join("T");
 		
 		var editTimeLabel = document.createElement("label");
 		editTimeLabel.className = "deadline-label";
@@ -550,6 +571,11 @@
 		unseenInput.name = "edit-task-hash";
 		unseenInput.value = hash;
 		
+		var unseenMode = document.createElement("input");
+		unseenMode.type = "hidden";
+		unseenMode.name = "edit-mode";
+		unseenMode.value = mode;
+		
 		var editForm = document.createElement("form");
 		editForm.action = "/edit";
 		editForm.method = "POST";
@@ -559,6 +585,7 @@
 		editForm.appendChild(editTask);
 		editForm.appendChild(editTime);
 		editForm.appendChild(unseenInput);
+		editForm.appendChild(unseenMode);
 		editForm.appendChild(editSubmitContainer);
 		
 		var editFormContainer = document.getElementById("edit-form-container");
@@ -568,9 +595,16 @@
 <script type="text/javascript">
 	$(function() {
 		$(document).on("click", ".delete-btn", function() {
-			$.post("/delete", `delete_hash=${$(this).attr("id")}`, function() {
+			if($("input:radio[name='render-mode']:checked").val() == "未完了") {
+				mode = "current_tasks";
+			} else if($("input:radio[name='render-mode']:checked").val() == "完了") {
+				mode = "completed_tasks";
+			} else if ($("input:radio[name='render-mode']:checked").val() == "削除") {
+				mode = "deleted_tasks";
+			}
+			$.post("/delete", `delete_hash=${$(this).attr("id")}&delete_mode=${mode}`, function() {
 				location.reload();
-			})
+			});
 		});
 	});
 </script>
@@ -609,7 +643,7 @@
 		});
 		$(document).on("focusout", ".input-subject", function() {
 			$(".select-container").delay(100).fadeOut();
-		})
+		});
 	});
 
 </script>
@@ -617,6 +651,37 @@
 	$(function() {
 		$(document).on("click", "#sub-table td", function() {
 			$("#add-sub-name").val($(this).text());
+		});
+	});
+</script>
+<script>
+	$(function() {
+		$(document).on("click", ".send-btn", function() {
+			var fileName = "{{lf}}";
+			$("#warning-file").text(fileName);
+			$("#send-warning-container").fadeIn();
+			$("#send-warning-container").attr("data-url", $(this).attr("data-url"));
+			$("#send-warning-container").attr("data-hash", $(this).attr("id"));
+			
+		});
+	});
+	
+	$(function() {
+		$(document).on("click", ".send-cancel", function() {
+			$("#send-warning-container").removeAttr("data-url");
+			$("#send-warning-container").fadeOut();
+		});
+	});
+</script>
+<script>
+	$(function() {
+		$(document).on("click", ".send-action", function() {
+			window.open($("#send-warning-container").attr("data-url"));
+			$("#send-warning-container").removeAttr("data-url");
+			var sendId = $("#send-warning-container").attr("data-hash");
+			$.get("/send", {id: `${sendId}`}, function() {
+				location.reload();
+			});
 		});
 	});
 </script>

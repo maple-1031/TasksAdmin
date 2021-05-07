@@ -102,7 +102,7 @@ def check():
     now = dt.datetime.now()
     recent_refresh_time = dt.datetime.strptime(recent_refresh["recent_refresh"], "%Y-%m-%d %H:%M:%S")
     
-    if (now - recent_refresh_time).total_seconds() > 3600:
+    if (now - recent_refresh_time).total_seconds() > 3600*12:
         
         with open("recent_refresh.json") as f:
             ref_dic = json.load(f)
@@ -208,15 +208,18 @@ def check():
             task.deadline = int(task.deadline_gen(i[1]))
             task.deadline_str = i[1]
             task.task_hash = str(hash("".join(i[:3])))
-            temp_dict = {"path":task.path,
-                         "subject":task.subject,
-                         "deadline_unix":task.deadline,
-                         "deadline_str":task.deadline_str,
-                         "deadline_day_str":task.deadline_str.split(" ")[0],
-                         "task_hash":task.task_hash
-                         }
+            temp_dict = {
+                "path":task.path,
+                "subject":task.subject,
+                "deadline_unix":task.deadline,
+                "deadline_str":task.deadline_str,
+                "deadline_day_str":task.deadline_str.split(" ")[0],
+                "task_hash":task.task_hash,
+                "submit_url":"https://www.edu.keio.jp/ess2/login?lang=jp"
+            }
             if (temp_dict not in list(df.values())[0]) and \
-                (temp_dict["task_hash"] not in [d.get("task_hash") for d in df["deleted_tasks"]]):
+                (temp_dict["task_hash"] not in [d.get("task_hash") for d in df["deleted_tasks"]]) and \
+                    temp_dict["deadline_unix"] != 0:
                 df["current_tasks"].append(temp_dict)
         
         df["current_tasks"] = sorted(df["current_tasks"], key=lambda x: x['deadline_unix'])
@@ -231,7 +234,12 @@ def check():
     with open("current_subs.json", mode="rt", encoding="utf-8") as f:
         current_subs = json.load(f)
         
-    return render_template('index.html', ct = current_tasks, cs = current_subs)
+    files = glob.glob(r"D:\Users\maple\OneDrive - keio.jp\☆提出☆\◇CMS提出◇\*")
+    for file in files:
+        last_file = file.split("\\")[-1]
+        print(last_file)
+        
+    return render_template('index.html', ct = current_tasks, cs = current_subs, lf = last_file)
 
 @nc.route("/add", methods=["POST"])
 def add():
@@ -243,9 +251,12 @@ def add():
     submit_task_file = request.files.get("new-task-file")
     print(type(submit_task_file))
     print(secure_filename(submit_task_file.filename))
-    submit_task_file.save(rf"D:\Users\maple\OneDrive - keio.jp\.temp\.temp\{secure_filename(submit_task_file.filename)}")
-    
-    task.path = rf"D:\Users\maple\OneDrive - keio.jp\.temp\.temp\{secure_filename(submit_task_file.filename)}"
+    try:
+        submit_task_file.save(rf"D:\Users\maple\OneDrive - keio.jp\.temp\.temp\{secure_filename(submit_task_file.filename)}")
+    except:
+        task.path = "#"
+    else:
+        task.path = rf"D:\Users\maple\OneDrive - keio.jp\.temp\.temp\{secure_filename(submit_task_file.filename)}"
     task.subject = submit_task_name
     task.deadline = submit_task_deadline
     task.deadline_str = submit_task_deadline_str
@@ -257,7 +268,7 @@ def add():
         "deadline_str":task.deadline_str,
         "deadline_day_str":task.deadline_str.split(" ")[0],
         "task_hash":task.task_hash,
-        "submit_url":"https://www.edu.keio.jp/ess2/login?lang=jp"
+        "submit_url":"https:Ds//www.edu.keio.jp/ess2/login?lang=jp"
     }
     
     with open("current_tasks.json", mode="rt", encoding="utf-8") as f:
@@ -273,14 +284,15 @@ def add():
 @nc.route("/delete", methods = ["POST"])
 def delete():
     delete_hash = request.form.get("delete_hash")
+    delete_mode = request.form.get("delete_mode")
     with open("current_tasks.json", mode="rt", encoding="utf-8") as f:
         df = json.load(f)
-    hash_list = [d.get("task_hash") for d in df["current_tasks"]]
+    hash_list = [d.get("task_hash") for d in df[delete_mode]]
     hash_index = hash_list.index(delete_hash)
+    if delete_mode in ["current_tasks", "completed_tasks"]:
+        df["deleted_tasks"].append(df[delete_mode][hash_index])
     
-    df["deleted_tasks"].append(df["current_tasks"][hash_index])
-    
-    df["current_tasks"].pop(hash_index)
+    df[delete_mode].pop(hash_index)
     df["current_tasks"] = sorted(df["current_tasks"], key=lambda x: x['deadline_unix'])
     df["deleted_tasks"] = sorted(df["deleted_tasks"], key=lambda x: x["deadline_unix"])
 
@@ -295,7 +307,7 @@ def refresh():
     with open("recent_refresh.json") as f:
         ref_dic = json.load(f)
         
-    ref_dic["recent_refresh"] = (dt.datetime.now()+dt.timedelta(hours=-1)).strftime('%Y-%m-%d %H:%M:%S')
+    ref_dic["recent_refresh"] = (dt.datetime.now()+dt.timedelta(hours=-12)).strftime('%Y-%m-%d %H:%M:%S')
     
     with open("recent_refresh.json", "w") as f:
         json.dump(ref_dic, f, indent=4)
@@ -307,24 +319,46 @@ def edit():
     edited_name = request.form.get("edit-task-name")
     edited_deadline = request.form.get("edit-task-deadline")
     edited_hash = request.form.get("edit-task-hash")
+    edit_mode = request.form.get("edit-mode")
     
     with open("current_tasks.json", mode="rt", encoding="utf-8") as f:
         df = json.load(f)
         
-    hash_list = [d.get("task_hash") for d in df["current_tasks"]]
+    hash_list = [d.get("task_hash") for d in df[edit_mode]]
     hash_index = hash_list.index(edited_hash)
     
-    df["current_tasks"][hash_index]["subject"] = edited_name
+    df[edit_mode][hash_index]["subject"] = edited_name
     deadline_temp = " ".join(edited_deadline.split("T"))
-    df["current_tasks"][hash_index]["deadline_str"] = deadline_temp
-    df["current_tasks"][hash_index]["deadline_day_str"] = deadline_temp.split(" ")[0]
+    df[edit_mode][hash_index]["deadline_str"] = deadline_temp
+    df[edit_mode][hash_index]["deadline_day_str"] = deadline_temp.split(" ")[0]
     
     dl_pre_int = dt.datetime.strptime(deadline_temp, "%Y-%m-%d %H:%M")
-    df["current_tasks"][hash_index]["deadline_unix"] = dl_pre_int.timestamp()
+    df[edit_mode][hash_index]["deadline_unix"] = dl_pre_int.timestamp()
     
     with open("current_tasks.json", mode="wt", encoding="utf-8") as f:
         json.dump(df, f, indent=4, ensure_ascii=False)
     
+    return redirect("/")
+
+@nc.route("/send", methods = ["GET"])
+def send():
+    sended_id = request.args.get("id")
+    
+    with open("current_tasks.json", mode="rt", encoding="utf-8") as f:
+        df = json.load(f)
+    hash_list = [d.get("task_hash") for d in df["current_tasks"]]
+    hash_index = hash_list.index(sended_id)
+    
+    df["completed_tasks"].append(df["current_tasks"][hash_index])
+    
+    df["current_tasks"].pop(hash_index)
+    df["current_tasks"] = sorted(df["current_tasks"], key=lambda x: x['deadline_unix'])
+    df["completed_tasks"] = sorted(df["completed_tasks"], key=lambda x: x["deadline_unix"], reverse=True)
+
+    
+    with open("current_tasks.json", mode="wt", encoding="utf-8") as f:
+        json.dump(df, f, indent=4, ensure_ascii=False)
+        
     return redirect("/")
 
 if __name__ == '__main__':
