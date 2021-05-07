@@ -1,16 +1,7 @@
 {
     "current_tasks": [
         {
-            "path": "D:\\Users\\maple\\OneDrive - keio.jp\\★課題★\\.temp\\hw07_chap7-1.pdf",
-            "subject": "流体力学",
-            "deadline_unix": 1620360000,
-            "deadline_str": "2021-05-07 13:00",
-            "deadline_day_str": "2021-05-07",
-            "task_hash": "2033469376941567687",
-            "submit_url": "https://lms.keio.jp/courses/14251/assignments/264887"
-        },
-        {
-            "path": "D:\\Users\\maple\\OneDrive - keio.jp\\★課題★\\.temp",
+            "path": "https://lms.keio.jp/courses/21227/assignments/415358",
             "subject": "グラフィック表現論 コンピュータグラフィクス",
             "deadline_unix": 1620610200,
             "deadline_str": "2021-05-10 10:30",
@@ -19,7 +10,7 @@
             "submit_url": "https://lms.keio.jp/courses/21227/assignments/415358"
         },
         {
-            "path": "D:\\Users\\maple\\OneDrive - keio.jp\\★課題★\\.temp",
+            "path": "https://lms.keio.jp/courses/19295/assignments/406258",
             "subject": "先進材料の力学と数値シミュレーション",
             "deadline_unix": 1620696600,
             "deadline_str": "2021-05-11 10:30",
@@ -46,7 +37,7 @@
             "submit_url": "https://lms.keio.jp/courses/14251/assignments/264889"
         },
         {
-            "path": "D:\\Users\\maple\\OneDrive - keio.jp\\★課題★\\.temp",
+            "path": "https://lms.keio.jp/courses/21286/assignments/219237",
             "subject": "地球環境科学Ⅰ",
             "deadline_unix": 1622473140,
             "deadline_str": "2021-05-31 23:59",

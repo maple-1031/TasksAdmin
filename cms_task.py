@@ -83,7 +83,7 @@ def main():
             pass
         
         # Wait to load page
-        time.sleep(2)
+        time.sleep(1)
         # Calculate new scroll height and compare with last scroll height
         new_height = driver.execute_script("return document.body.scrollHeight")
         if new_height == last_height:
@@ -129,12 +129,13 @@ def main():
             try:
                 task_click = driver.find_element_by_xpath("//a[@class='instructure_file_link']")
             except:
-                task.path = r"D:\Users\maple\OneDrive - keio.jp\★課題★\.temp"
+                task.path = url
+                print(task.path)
             else:
                 task_click.click()
                 file_name = driver.find_element_by_xpath("//a[@class='instructure_file_link']").get_attribute("title")
                 task.path = rf"D:\Users\maple\OneDrive - keio.jp\★課題★\.temp\{file_name}"
-            
+            #print(task.path)
             temp_dict = {
                 "path":task.path,
                 "subject":task.subject,

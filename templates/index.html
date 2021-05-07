@@ -113,7 +113,8 @@
 
 			var newOpenContainer = document.createElement("a");
 			newOpenContainer.className = "func-around";
-			newOpenContainer.href = ct[mode][i]["path"]
+			newOpenContainer.href = ct[mode][i]["path"];
+			newOpenContainer.target = "_blank";
 			newOpenContainer.appendChild(newOpen);
 
 			var newSend = document.createElement("img");
@@ -300,7 +301,7 @@
                                     </tr>
                                     <tr>
                                         <th scope="row">1</th>
-                                        <td>てすと</td>
+                                        <td>&nbsp;</td>
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
@@ -378,8 +379,8 @@
 	<div class="send-warning-center">
 		<div class="send-warning">
             <div style="width:100%">
-                <p><span id="warning-file"></span> を</p>
-                <p>提出しますか？</p>
+                <p><span id="warning-file"></span></p>
+                <p>を提出しますか？</p>
                 <div class="send-btn-container">
                     <div class="send-cancel">閉じる</div>
 					<div class="send-action">提出</div>
@@ -657,8 +658,14 @@
 <script>
 	$(function() {
 		$(document).on("click", ".send-btn", function() {
-			var fileName = "{{lf}}";
-			$("#warning-file").text(fileName);
+				console.log($(this).attr("id"));
+			$.post("/presend", `id=${$(this).attr("id")}`).done(function(data) {
+				var pl = JSON.parse(data.values).parts;
+				var tl = JSON.parse(data.values).title;
+				console.log(tl);
+				var fileName = tl;
+				$("#warning-file").text(fileName);
+			});
 			$("#send-warning-container").fadeIn();
 			$("#send-warning-container").attr("data-url", $(this).attr("data-url"));
 			$("#send-warning-container").attr("data-hash", $(this).attr("id"));

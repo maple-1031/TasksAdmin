@@ -25,6 +25,7 @@ import datetime as dt
 import importlib
 import pprint
 
+import PDFMerger
 import cms_task
 import settings
 importlib.reload(settings)
@@ -234,12 +235,7 @@ def check():
     with open("current_subs.json", mode="rt", encoding="utf-8") as f:
         current_subs = json.load(f)
         
-    files = glob.glob(r"D:\Users\maple\OneDrive - keio.jp\☆提出☆\◇CMS提出◇\*")
-    for file in files:
-        last_file = file.split("\\")[-1]
-        print(last_file)
-        
-    return render_template('index.html', ct = current_tasks, cs = current_subs, lf = last_file)
+    return render_template('index.html', ct = current_tasks, cs = current_subs)
 
 @nc.route("/add", methods=["POST"])
 def add():
@@ -268,7 +264,7 @@ def add():
         "deadline_str":task.deadline_str,
         "deadline_day_str":task.deadline_str.split(" ")[0],
         "task_hash":task.task_hash,
-        "submit_url":"https:Ds//www.edu.keio.jp/ess2/login?lang=jp"
+        "submit_url":"https://www.edu.keio.jp/ess2/login?lang=jp"
     }
     
     with open("current_tasks.json", mode="rt", encoding="utf-8") as f:
@@ -340,6 +336,23 @@ def edit():
     
     return redirect("/")
 
+@nc.route("/presend", methods=["POST"])
+def presend():
+    sended_id = request.form.get("id")
+    print(sended_id)
+    with open("current_tasks.json", mode="rt", encoding="utf-8") as f:
+        df = json.load(f)
+    hash_list = [d.get("task_hash") for d in df["current_tasks"]]
+    hash_index = hash_list.index(sended_id)
+    file_name = f'{df["current_tasks"][hash_index]["subject"].split(" ")[0]}_{df["current_tasks"][hash_index]["task_hash"]}.pdf'
+    pdf_dir = Path(r"D:/Users/maple/OneDrive - keio.jp/☆提出☆/◇CMS提出◇/結合用")
+    return_json = {
+        "parts": f'{sum(os.path.isfile(os.path.join(pdf_dir, name)) for name in os.listdir(pdf_dir))}',
+        "title": file_name
+    }
+    print(return_json)
+    return jsonify(values=json.dumps(return_json))
+
 @nc.route("/send", methods = ["GET"])
 def send():
     sended_id = request.args.get("id")
@@ -348,6 +361,9 @@ def send():
         df = json.load(f)
     hash_list = [d.get("task_hash") for d in df["current_tasks"]]
     hash_index = hash_list.index(sended_id)
+    file_name = f'{df["current_tasks"][hash_index]["subject"].split(" ")[0]}_{df["current_tasks"][hash_index]["task_hash"]}.pdf'
+    PDFMerger.pdfMerger(r"D:/Users/maple/OneDrive - keio.jp/☆提出☆/◇CMS提出◇/結合用", \
+                        rf"D:/Users/maple/OneDrive - keio.jp/☆提出☆/◇CMS提出◇/{file_name}")
     
     df["completed_tasks"].append(df["current_tasks"][hash_index])
     
@@ -358,6 +374,7 @@ def send():
     
     with open("current_tasks.json", mode="wt", encoding="utf-8") as f:
         json.dump(df, f, indent=4, ensure_ascii=False)
+        
         
     return redirect("/")
 

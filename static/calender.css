@@ -17,6 +17,7 @@ div#calendar h1 {
 div table {
     border-spacing: 0;
     border-collapse: collapse;
+	width: 100%;
 }
 
 div#calendar td {

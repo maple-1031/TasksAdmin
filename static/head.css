@@ -674,6 +674,11 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator{
 	color: black;
 	font-weight: bold;
 	font-size: 20px;
+	width: 280px;
+	display: inline-block;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
 }
 
 .send-action {
